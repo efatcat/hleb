@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>HLEB GAME — экосистема игр</title>
+    <!-- Шрифт Unbounded -->
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c10;
+            font-family: 'Unbounded', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: #f0f3f8;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        /* анимированный градиентный фон */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 20% 30%, #0f1219, #030507);
+        }
+
+        /* эффект сетки */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(60, 80, 120, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(60, 80, 120, 0.08) 1px, transparent 1px);
+            background-size: 48px 48px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* анимация появления */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 5px rgba(255,215,0,0.3); }
+            100% { text-shadow: 0 0 20px rgba(255,215,0,0.7); }
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.9s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+        }
+
+        /* SVG стилизация */
+        .logo-svg {
+            width: 130px;
+            height: auto;
+            filter: drop-shadow(0 0 12px rgba(218, 165, 32, 0.6));
+            transition: transform 0.3s ease, filter 0.3s;
+            margin-bottom: 1.2rem;
+        }
+
+        .logo-svg:hover {
+            transform: scale(1.03);
+            filter: drop-shadow(0 0 22px rgba(218, 165, 32, 0.9));
+        }
+
+        .logo-svg svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        h1 {
+            font-size: clamp(2.6rem, 8vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #FFF6E0, #E4B363);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.75rem;
+            animation: glowPulse 2s infinite alternate;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #b9c7d9;
+            background: rgba(20, 25, 35, 0.6);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid rgba(228, 179, 99, 0.3);
+            letter-spacing: 0.3px;
+        }
+
+        /* карточки игр */
+        .games-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0 2rem;
+        }
+
+        .game-card {
+            background: rgba(18, 22, 32, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(228, 179, 99, 0.25);
+            padding: 2rem 1.8rem;
+            width: 280px;
+            text-align: center;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+            cursor: pointer;
+            animation: fadeInUp 0.7s ease backwards;
+            box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
+        }
+
+        .game-card:nth-child(1) { animation-delay: 0.1s; }
+        .game-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(228, 179, 99, 0.7);
+            background: rgba(25, 30, 42, 0.85);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(228,179,99,0.2);
+        }
+
+        .game-icon {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .game-card:hover .game-icon {
+            transform: scale(1.1);
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #f3e5c0, #e4b363);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.75rem;
+        }
+
+        .game-desc {
+            font-size: 0.8rem;
+            color: #b1c2d8;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            letter-spacing: -0.2px;
+        }
+
+        .game-link {
+            display: inline-block;
+            background: rgba(228, 179, 99, 0.12);
+            border: 1px solid rgba(228, 179, 99, 0.5);
+            padding: 0.6rem 1.4rem;
+            border-radius: 60px;
+            text-decoration: none;
+            color: #f5e2b0;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.25s;
+            backdrop-filter: blur(4px);
+        }
+
+        .game-link:hover {
+            background: #e4b363;
+            color: #0a0c10;
+            border-color: #e4b363;
+            box-shadow: 0 0 12px rgba(228,179,99,0.5);
+        }
+
+        /* декоративные элементы */
+        .glow-spot {
+            position: fixed;
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, rgba(228,179,99,0.08) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            top: -20%;
+            right: -20%;
+        }
+
+        .glow-spot-2 {
+            bottom: -30%;
+            left: -20%;
+            background: radial-gradient(circle, rgba(80,120,200,0.06) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 5rem;
+            font-size: 0.7rem;
+            color: #5f6e85;
+            border-top: 1px solid rgba(228,179,99,0.2);
+            padding-top: 2rem;
+            letter-spacing: 0.3px;
+            font-weight: 300;
+        }
+
+        @media (max-width: 650px) {
+            .container {
+                padding: 2rem 1.2rem;
+            }
+            .game-card {
+                width: 100%;
+                max-width: 320px;
+            }
+            .logo-svg {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="animated-bg"></div>
+<div class="grid-overlay"></div>
+<div class="glow-spot"></div>
+<div class="glow-spot glow-spot-2"></div>
+
+<div class="container">
+    <div class="hero">
+        <!-- SVG логотип (вставлен как raw SVG для точного контроля) -->
+        <div class="logo-svg">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="86.0736" height="117.41747" viewBox="0,0,86.0736,117.41747">
+                <g transform="translate(-197.48673,-136.23229)">
+                    <g data-paper-data="{&quot;isPaintingLayer&quot;:true}" fill-rule="nonzero" stroke="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" style="mix-blend-mode: normal">
+                        <path d="M233.82314,247.5956v-43.68606h7.50164c0,0 -2.60607,14.70562 1.1849,27.31117c1.85072,6.15394 11.61203,12.47958 11.61203,15.05107c0,4.06737 -12.79693,1.32382 -12.79693,1.32382z" fill="#a0783d" stroke-width="0"></path>
+                        <path d="M223.08659,252.74489v-43.68606h7.50165c0,0 -2.60607,14.70562 1.1849,27.31117c1.85072,6.15395 11.61203,12.47959 11.61203,15.05107c0,4.06737 -12.79693,1.32382 -12.79693,1.32382z" fill="#b28644" stroke-width="0"></path>
+                        <path d="M267.88192,184.3647c2.95912,0 5.35796,10.69198 5.35796,23.88119c0,13.18921 8.14137,30.83451 -4.13328,33.06626c-4.91736,0.89407 -6.31249,-1.92172 -6.21829,-6.46642c0.07958,-3.83914 3.6713,-7.99354 4.65098,-13.10605c0.75548,-3.94252 -2.6165,-37.37498 0.34262,-37.37498z" data-paper-data="{&quot;index&quot;:null}" fill="#a0783d" stroke-width="0"></path>
+                        <path d="M200.36625,210.99981c0,0 4.02277,-12.04237 0.48767,-30.67954c-2.1421,-11.29325 -6.56478,-27.38435 0.39785,-34.6544c9.72938,-10.15896 21.94625,-9.64617 36.04695,-9.28543c12.64306,0.32345 29.92827,4.24336 40.26395,13.6743c9.46153,8.63331 -1.3622,17.0749 -3.8413,29.84799c-2.52027,12.98526 0.39504,25.44958 -1.58603,30.23916c-0.57314,1.38565 -71.76909,0.85792 -71.76909,0.85792z" fill="#d09c4f" stroke-width="0"></path>
+                        <path d="M200.30487,211.54989c0,0 3.6978,-10.74688 0.47542,-28.05391c-0.87865,-4.71911 -2.17822,-10.34038 -2.76371,-15.71148c3.44758,0.48018 12.14829,-0.06927 15.5855,1.11655c21.46927,7.40682 30.68955,19.12214 52.80018,19.9527c-0.9787,10.09258 -0.16999,20.97071 -0.28028,21.24234c-0.52244,1.28675 -63.98883,0.53966 -63.98883,0.53966z" fill="#b28644" stroke-width="0"></path>
+                        <path d="M213.76458,210.97516c0,0 1.86121,-9.83275 -1.34681,-27.13978c-1.94391,-10.48725 -5.95738,-25.42992 0.36103,-32.1811c16.74565,-17.89261 46.85785,-18.9272 66.69797,-0.40179c8.58611,8.01715 1.31617,20.33369 -0.93355,32.19516c-2.12009,11.17807 -0.94365,26.66311 -1.07492,26.98786c-0.52011,1.28675 -63.70372,0.53966 -63.70372,0.53966z" fill="#ffefc9" stroke-width="0"></path>
+                        <path d="M213.89216,210.81583c0,0 1.86954,-9.83275 -1.35284,-27.13978c-0.87865,-4.71911 -2.17822,-10.34038 -2.76371,-15.71148c3.44758,0.48018 6.96823,0.84486 10.40544,2.03068c21.46927,7.40682 35.86961,18.20801 57.98025,19.03857c-0.9787,10.09258 -0.16999,20.97071 -0.28028,21.24234c-0.52244,1.28675 -63.98883,0.53966 -63.98883,0.53966z" fill="#ecdebb" stroke-width="0"></path>
+                        <path d="M258.5315,192.7876c-2.6,0 -2.60001,-4.17855 -2.60001,-4.17855v-0.47907c0,-8.13646 -0.19997,-16.00458 -0.58853,-24.11245c0,0 -0.19941,-4.16624 2.39293,-4.48672c2.59234,-0.32048 2.79175,3.84576 2.79175,3.84576c0.3975,8.31553 0.60385,16.409 0.60385,24.7534v0.47907c0,0 0,4.17855 -2.6,4.17855z" fill="#ae8342" stroke-width="0.5"></path>
+                        <path d="M243.59051,191.70494c-2.62248,0 -2.62247,-4.39839 -2.62247,-4.39839v-3.02569c0,-6.89366 -0.05765,-13.70052 0.31144,-20.56948c0,0 0.23743,-4.38033 2.84914,-3.98212c2.61171,0.39821 2.37428,4.77853 2.37428,4.77853c-0.36103,6.59922 -0.2899,13.14827 -0.2899,19.77307v3.02569c0,0 0,4.39839 -2.62248,4.39839z" fill="#ae8342" stroke-width="0.5"></path>
+                        <path d="M237.67492,197.04432c2.19791,1.00491 6.47204,-0.43056 7.00882,3.56614c0.66822,4.97538 -7.49921,8.67329 -11.18724,6.15152c-2.62699,-1.79627 -2.32735,-3.86461 -2.58235,-6.45747l-0.00657,-1.36325c0,0 0.40938,-3.43107 1.09128,-4.13048c0.55327,-0.56747 3.47815,1.22864 5.67606,2.23355z" fill="#ae8342" stroke-width="0.5"></path>
+                        <path d="M211.07208,230.41915c0.97968,5.11251 4.5714,9.26691 4.65098,13.10605c0.0942,4.5447 -1.30092,7.36049 -6.21829,6.46642c-12.27465,-2.23175 -4.13328,-19.87705 -4.13328,-33.06626c0,-13.18922 2.39884,-23.88119 5.35796,-23.88119c2.95912,0 -0.41286,33.43246 0.34263,37.37498z" fill="#b28644" stroke-width="0"></path>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <h1>HLEB GAME</h1>
+        <div class="tagline">браузерные игры</div>
+    </div>
+
+    <div class="games-grid">
+        <!-- Карточка Kolblocks -->
+        <div class="game-card">
+            <div class="game-icon">🟦</div>
+            <div class="game-title">Kolblocks</div>
+            <div class="game-desc">Динамичный блоковый экшен. Версии, битвы, уникальный стиль.</div>
+            <a href="https://efatcat.github.io/kolblocks" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
+        </div>
+        <!-- Карточка Buy Things -->
+        <div class="game-card">
+            <div class="game-icon">💰</div>
+            <div class="game-title">Buy Things</div>
+            <div class="game-desc">Экономическая песочница. Покупай, продавай, становись магнатом.</div>
+            <a href="https://efatcat.github.io/TheThingGame" class="game-link" target="_blank" rel="noopener noreferrer">Попробовать →</a>
+        </div>
+    </div>
+
+    <footer>
+        <span>HLEB GAME © 2026 — игры без границ</span><br>
+        <span style="font-size: 0.65rem;">dark energy · experimental core</span>
+    </footer>
+</div>
+
+<!-- небольшая анимация частиц (простая, стильная) -->
+<script>
+    (function() {
+        // Эффект слежения за мышью для бликов (необязательно, но добавляет вайб)
+        const glowSpot = document.querySelector('.glow-spot');
+        if (glowSpot) {
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                glowSpot.style.transform = `translate(${x * 30}px, ${y * 20}px)`;
+            });
+        }
+        // Плавное появление карточек уже через анимацию CSS
+        console.log('HLEB GAME — тёмная тема, анимации активны');
+    })();
+</script>
+</body>
+</html>
