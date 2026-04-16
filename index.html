@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>HLEB GAME — экосистема игр</title>
+    <title>HLEB GAME — система ИИ-игр</title>
     <!-- Шрифт Unbounded -->
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -77,7 +77,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
             animation: fadeInUp 0.9s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
         }
 
@@ -126,13 +126,24 @@
             letter-spacing: 0.3px;
         }
 
+        /* разделы */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1.2rem;
+            letter-spacing: -0.3px;
+            color: #e4b363;
+            border-left: 3px solid #e4b363;
+            padding-left: 1rem;
+        }
+
         /* карточки игр */
         .games-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 2rem;
-            margin: 3rem 0 2rem;
+            margin: 1rem 0 1rem;
         }
 
         .game-card {
@@ -140,8 +151,8 @@
             backdrop-filter: blur(12px);
             border-radius: 2rem;
             border: 1px solid rgba(228, 179, 99, 0.25);
-            padding: 2rem 1.8rem;
-            width: 280px;
+            padding: 1.5rem 1.5rem 1.8rem;
+            width: 260px;
             text-align: center;
             transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2);
             cursor: pointer;
@@ -149,57 +160,93 @@
             box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
         }
 
-        .game-card:nth-child(1) { animation-delay: 0.1s; }
-        .game-card:nth-child(2) { animation-delay: 0.2s; }
-
         .game-card:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-8px) scale(1.02);
             border-color: rgba(228, 179, 99, 0.7);
             background: rgba(25, 30, 42, 0.85);
-            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(228,179,99,0.2);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.6);
+        }
+
+        /* изображение игры */
+        .game-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background: #0f121b;
+        }
+
+        .game-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-image img {
+            transform: scale(1.02);
         }
 
         .game-icon {
-            font-size: 3.8rem;
-            margin-bottom: 1rem;
-            display: inline-block;
-            transition: transform 0.2s;
-        }
-
-        .game-card:hover .game-icon {
-            transform: scale(1.1);
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: none; /* скрываем иконку, показываем картинку */
         }
 
         .game-title {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 700;
             background: linear-gradient(120deg, #f3e5c0, #e4b363);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.4rem;
         }
 
-        .game-desc {
-            font-size: 0.8rem;
+        .author-block {
+            margin: 0.4rem 0 1rem;
+            font-size: 0.7rem;
             color: #b1c2d8;
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: #e4b363;
+            background: rgba(228, 179, 99, 0.12);
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 0.65rem;
+            text-decoration: none;
+            border: 0.5px solid rgba(228,179,99,0.3);
+        }
+
+        .author-name:hover {
+            background: #e4b363;
+            color: #0a0c14;
+            box-shadow: 0 0 8px rgba(228,179,99,0.6);
         }
 
         .game-link {
             display: inline-block;
             background: rgba(228, 179, 99, 0.12);
             border: 1px solid rgba(228, 179, 99, 0.5);
-            padding: 0.6rem 1.4rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 60px;
             text-decoration: none;
             color: #f5e2b0;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             transition: all 0.25s;
-            backdrop-filter: blur(4px);
         }
 
         .game-link:hover {
@@ -209,7 +256,96 @@
             box-shadow: 0 0 12px rgba(228,179,99,0.5);
         }
 
-        /* декоративные элементы */
+        /* блок рекомендаций (случайные игры) */
+        .recommendations-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .rec-card {
+            background: rgba(18, 22, 32, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(228, 179, 99, 0.2);
+            padding: 1rem;
+            width: 200px;
+            text-align: center;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+
+        .rec-card:hover {
+            border-color: rgba(228, 179, 99, 0.6);
+            background: rgba(25, 30, 42, 0.7);
+            transform: translateY(-4px);
+        }
+
+        .rec-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 0.6rem;
+            background: #0f121b;
+        }
+
+        .rec-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .rec-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #f3e5c0;
+        }
+
+        /* Google форма */
+        .google-form-block {
+            margin: 2rem auto 1rem;
+            max-width: 600px;
+            background: rgba(18, 22, 32, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(228, 179, 99, 0.3);
+            border-radius: 2rem;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: #cfdef5;
+            font-weight: 500;
+        }
+
+        .form-link {
+            background: rgba(228, 179, 99, 0.12);
+            border: 1px solid rgba(228, 179, 99, 0.5);
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            text-decoration: none;
+            color: #f5e2b0;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.25s;
+        }
+
+        .form-link:hover {
+            background: #e4b363;
+            color: #0a0c10;
+            border-color: #e4b363;
+            box-shadow: 0 0 12px rgba(228,179,99,0.5);
+        }
+
         .glow-spot {
             position: fixed;
             width: 70vw;
@@ -230,22 +366,20 @@
 
         footer {
             text-align: center;
-            margin-top: 5rem;
+            margin-top: 3rem;
             font-size: 0.7rem;
             color: #5f6e85;
             border-top: 1px solid rgba(228,179,99,0.2);
             padding-top: 2rem;
-            letter-spacing: 0.3px;
-            font-weight: 300;
         }
 
         @media (max-width: 650px) {
             .container {
                 padding: 2rem 1.2rem;
             }
-            .game-card {
+            .game-card, .rec-card {
                 width: 100%;
-                max-width: 320px;
+                max-width: 260px;
             }
             .logo-svg {
                 width: 100px;
@@ -261,7 +395,6 @@
 
 <div class="container">
     <div class="hero">
-        <!-- SVG логотип (вставлен как raw SVG для точного контроля) -->
         <div class="logo-svg">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="86.0736" height="117.41747" viewBox="0,0,86.0736,117.41747">
                 <g transform="translate(-197.48673,-136.23229)">
@@ -282,36 +415,149 @@
             </svg>
         </div>
         <h1>HLEB GAME</h1>
-        <div class="tagline">браузерные игры</div>
+        <div class="tagline">система ИИ-игр</div>
     </div>
 
-    <div class="games-grid">
-        <!-- Карточка Kolblocks -->
-        <div class="game-card">
-            <div class="game-icon">🟦</div>
+    <!-- Основные игры (все доступные) -->
+    <div class="section-title">✦ Каталог игр</div>
+    <div class="games-grid" id="allGamesGrid">
+        <!-- Kolblocks -->
+        <div class="game-card" data-game-url="https://efatcat.github.io/kolblocks">
+            <div class="game-image">
+                <img src="https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2NotCTNzdENykHI__Mau_7PpqDL_i6iagkBC3ooC5OrownA" alt="Kolblocks" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23e4b363\'%3E%3Cpath d=\'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-2h2v2zm0-4h-2V7h2v6z\'/%3E%3C/svg%3E'">
+            </div>
             <div class="game-title">Kolblocks</div>
-            <div class="game-desc">Необычный платформер. Скины, эло, боссы, ауры и качественная графика.</div>
+            <div class="author-block">
+                <span>👤</span>
+                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/hleb-game-off">Hleb Game Official</span>
+            </div>
             <a href="https://efatcat.github.io/kolblocks" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
         </div>
-        <!-- Карточка Buy Things -->
-        <div class="game-card">
-            <div class="game-icon">💰</div>
-            <div class="game-title">Buy Random Things</div>
-            <div class="game-desc">Аналог Steal a Brainrot, но вместо брейнротов - эмодзи. Покупай вещи и они будут приносить доход.</div>
-            <a href="https://efatcat.github.io/TheThingGame" class="game-link" target="_blank" rel="noopener noreferrer">Попробовать →</a>
+
+        <!-- Buy Things -->
+        <div class="game-card" data-game-url="https://efatcat.github.io/TheThingGame">
+            <div class="game-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a2a3a'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%23e4b363'%3E💰%3C/text%3E%3C/svg%3E" alt="Buy Things">
+            </div>
+            <div class="game-title">Buy Things</div>
+            <div class="author-block">
+                <span>👤</span>
+                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/hleb-game-off">Hleb Game Official</span>
+            </div>
+            <a href="https://efatcat.github.io/TheThingGame" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
         </div>
+    </div>
+
+    <!-- Рекомендации (случайные игры) -->
+    <div class="section-title">🎲 Вам также может понравиться</div>
+    <div class="recommendations-grid" id="recGrid"></div>
+
+    <!-- Google форма -->
+    <div class="google-form-block">
+        <span class="form-text">📋 Чтобы разместить свою игру на платформе, заполните Google-форму</span>
+        <a href="https://forms.gle/3iGPebpzUj76Xtci8" class="form-link" target="_blank" rel="noopener noreferrer">Подать заявку →</a>
     </div>
 
     <footer>
-        <span>HLEB GAME © 2026 — игры без границ</span><br>
-        <span style="font-size: 0.65rem;">dark energy · experimental core</span>
+        <span>HLEB GAME © 2025 — система ИИ-игр</span><br>
+        <span style="font-size: 0.65rem;">AI-powered · neural sandbox</span>
     </footer>
 </div>
 
-<!-- небольшая анимация частиц (простая, стильная) -->
 <script>
     (function() {
-        // Эффект слежения за мышью для бликов (необязательно, но добавляет вайб)
+        // База всех игр (для рекомендаций)
+        const gamesLibrary = [
+            {
+                title: "Kolblocks",
+                url: "https://efatcat.github.io/kolblocks",
+                authorPage: "https://efatcat.github.io/h/avtor/hleb-game-off",
+                image: "https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2NotCTNzdENykHI__Mau_7PpqDL_i6iagkBC3ooC5OrownA",
+                fallbackIcon: "🟦"
+            },
+            {
+                title: "Buy Things",
+                url: "https://efatcat.github.io/TheThingGame",
+                authorPage: "https://efatcat.github.io/h/avtor/hleb-game-off",
+                image: null, // используем эмодзи-заглушку
+                fallbackIcon: "💰"
+            }
+        ];
+
+        // Функция для получения случайных игр (до 3, но у нас всего 2)
+        function getRandomGames(arr, count = 2) {
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, Math.min(count, arr.length));
+        }
+
+        // Отрисовка рекомендаций
+        const recGrid = document.getElementById('recGrid');
+        if (recGrid) {
+            const randomGames = getRandomGames(gamesLibrary, 3);
+            randomGames.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'rec-card';
+                card.setAttribute('data-game-url', game.url);
+                
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'rec-image';
+                if (game.image) {
+                    const img = document.createElement('img');
+                    img.src = game.image;
+                    img.alt = game.title;
+                    img.onerror = function() { this.style.display = 'none'; this.parentElement.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${game.fallbackIcon}</div>`; };
+                    imgDiv.appendChild(img);
+                } else {
+                    imgDiv.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${game.fallbackIcon}</div>`;
+                }
+                
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'rec-title';
+                titleDiv.textContent = game.title;
+                
+                card.appendChild(imgDiv);
+                card.appendChild(titleDiv);
+                
+                // Клик по рекомендации — открытие игры
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    window.open(game.url, '_blank', 'noopener,noreferrer');
+                });
+                
+                recGrid.appendChild(card);
+            });
+        }
+
+        // Клик по автору в основных карточках
+        const authorSpans = document.querySelectorAll('.author-name');
+        authorSpans.forEach(authorSpan => {
+            authorSpan.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const authorUrl = authorSpan.getAttribute('data-author-page');
+                if (authorUrl) window.location.href = authorUrl;
+            });
+        });
+
+        // Клик по карточке (не по кнопке, не по автору)
+        const gameCards = document.querySelectorAll('.game-card');
+        gameCards.forEach(card => {
+            const playBtn = card.querySelector('.game-link');
+            let gameUrl = playBtn ? playBtn.getAttribute('href') : null;
+            if (!gameUrl && card.hasAttribute('data-game-url')) {
+                gameUrl = card.getAttribute('data-game-url');
+            }
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.game-link')) return;
+                if (e.target.closest('.author-name')) return;
+                if (gameUrl) window.open(gameUrl, '_blank', 'noopener,noreferrer');
+            });
+        });
+
+        // Эффект слежения за мышью
         const glowSpot = document.querySelector('.glow-spot');
         if (glowSpot) {
             document.addEventListener('mousemove', (e) => {
@@ -320,8 +566,6 @@
                 glowSpot.style.transform = `translate(${x * 30}px, ${y * 20}px)`;
             });
         }
-        // Плавное появление карточек уже через анимацию CSS
-        console.log('HLEB GAME — тёмная тема, анимации активны');
     })();
 </script>
 </body>
