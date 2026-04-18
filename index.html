@@ -406,19 +406,42 @@
     <!-- Основные игры (все доступные) -->
     <div class="section-title">✦ Каталог игр</div>
     <div class="games-grid" id="allGamesGrid">
-        <!-- Angry Cat 3 (новая игра) -->
-        <div class="game-card" data-game-url="https://efatcat.github.io/acat3">
+        <!-- Angry Cat 3 -->
+        <div class="game-card" data-game-url="https://efatcat.github.io/angrycat3">
             <div class="game-image">
                 <img src="https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2NotAxFB8AXCMLTnV_GUSxeSmDL_i6iagkBC3ooC5OrownA" alt="Angry Cat 3" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%231a2a3a\'/%3E%3Ctext x=\'50\' y=\'55\' font-size=\'40\' text-anchor=\'middle\' fill=\'%23e4b363\'%3E🐱%3C/text%3E%3C/svg%3E'">
             </div>
             <div class="game-title">Angry Cat 3</div>
             <div class="author-block">
-                <span>👤</span>
-                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/hleb-game-off">Hleb Game Official</span>
+                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/hleb-game-off">Hleb Game</span>
                 <span>&</span>
                 <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/kotkotkin">KotKotkin</span>
             </div>
-            <a href="https://efatcat.github.io/acat3" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
+            <a href="https://efatcat.github.io/angrycat3" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
+        </div>
+
+        <!-- Neon Revenant (новая игра от Cactusini) -->
+        <div class="game-card" data-game-url="https://efatcat.github.io/shooter-oleg">
+            <div class="game-image">
+                <img src="https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2NotXkyO4ocD6NzH6e1y0BshYjL_i6iagkBC3ooC5OrownA" alt="Neon Revenant" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%231a2a3a\'/%3E%3Ctext x=\'50\' y=\'55\' font-size=\'40\' text-anchor=\'middle\' fill=\'%23e4b363\'%3E🔫%3C/text%3E%3C/svg%3E'">
+            </div>
+            <div class="game-title">Neon Revenant</div>
+            <div class="author-block">
+                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/cactusini">Cactusini</span>
+            </div>
+            <a href="https://efatcat.github.io/shooter-oleg" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
+        </div>
+
+        <!-- Dodge Easy (новая игра от Cactusini, без картинки) -->
+        <div class="game-card" data-game-url="https://efatcat.github.io/dodge-easy">
+            <div class="game-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a2a3a'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%23e4b363'%3E🌀%3C/text%3E%3C/svg%3E" alt="Dodge Easy">
+            </div>
+            <div class="game-title">Dodge Easy</div>
+            <div class="author-block">
+                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/cactusini">Cactusini</span>
+            </div>
+            <a href="https://efatcat.github.io/dodge-easy" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
         </div>
 
         <!-- Kolblocks -->
@@ -428,7 +451,6 @@
             </div>
             <div class="game-title">Kolblocks</div>
             <div class="author-block">
-                <span>👤</span>
                 <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/hleb-game-off">Hleb Game Official</span>
             </div>
             <a href="https://efatcat.github.io/kolblocks" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
@@ -441,7 +463,6 @@
             </div>
             <div class="game-title">Buy Things</div>
             <div class="author-block">
-                <span>👤</span>
                 <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/hleb-game-off">Hleb Game Official</span>
             </div>
             <a href="https://efatcat.github.io/TheThingGame" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
@@ -479,6 +500,20 @@
                 fallbackIcon: "🐱"
             },
             {
+                title: "Neon Revenant",
+                url: "https://efatcat.github.io/shooter-oleg",
+                authors: [{ name: "Cactusini", page: "https://efatcat.github.io/h/avtor/cactusini" }],
+                image: "https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2NotXkyO4ocD6NzH6e1y0BshYjL_i6iagkBC3ooC5OrownA",
+                fallbackIcon: "🔫"
+            },
+            {
+                title: "Dodge Easy",
+                url: "https://efatcat.github.io/dodge-easy",
+                authors: [{ name: "Cactusini", page: "https://efatcat.github.io/h/avtor/cactusini" }],
+                image: null,
+                fallbackIcon: "🌀"
+            },
+            {
                 title: "Kolblocks",
                 url: "https://efatcat.github.io/kolblocks",
                 authors: [{ name: "Hleb Game Official", page: "https://efatcat.github.io/h/avtor/hleb-game-off" }],
@@ -507,7 +542,8 @@
         // Отрисовка рекомендаций
         const recGrid = document.getElementById('recGrid');
         if (recGrid) {
-            const randomGames = getRandomGames(gamesLibrary, 3);
+            recGrid.innerHTML = '';
+            const randomGames = getRandomGames(gamesLibrary, 4);
             randomGames.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'rec-card';
@@ -535,7 +571,6 @@
                 card.appendChild(imgDiv);
                 card.appendChild(titleDiv);
                 
-                // Клик по рекомендации — открытие игры
                 card.addEventListener('click', (e) => {
                     e.stopPropagation();
                     window.open(game.url, '_blank', 'noopener,noreferrer');
@@ -545,11 +580,10 @@
             });
         }
 
-        // Обработка кликов по авторам (для всех карточек, включая динамические)
+        // Обработка кликов по авторам
         function bindAuthorClicks() {
             const authorSpans = document.querySelectorAll('.author-name');
             authorSpans.forEach(authorSpan => {
-                // Убираем дублирование обработчиков
                 if (authorSpan.hasAttribute('data-bound')) return;
                 authorSpan.setAttribute('data-bound', 'true');
                 authorSpan.addEventListener('click', (e) => {
@@ -560,7 +594,7 @@
             });
         }
 
-        // Обработка кликов по карточкам (не по кнопке, не по автору)
+        // Обработка кликов по карточкам
         function bindCardClicks() {
             const gameCards = document.querySelectorAll('.game-card');
             gameCards.forEach(card => {
@@ -579,7 +613,6 @@
             });
         }
 
-        // Инициализация обработчиков
         bindAuthorClicks();
         bindCardClicks();
 
