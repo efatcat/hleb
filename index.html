@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>HLEB GAME — система ИИ-игр</title>
+    <title>HLEB GAME — платформа ИИ-игр</title>
     <!-- Шрифт Unbounded -->
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -432,7 +432,7 @@
             <a href="https://efatcat.github.io/shooter-oleg" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
         </div>
 
-        <!-- Dodge Easy (новая игра от Cactusini, без картинки) -->
+        <!-- Dodge Easy (новая игра от Cactusini) -->
         <div class="game-card" data-game-url="https://efatcat.github.io/dodge-easy">
             <div class="game-image">
                 <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a2a3a'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%23e4b363'%3E🌀%3C/text%3E%3C/svg%3E" alt="Dodge Easy">
@@ -467,6 +467,30 @@
             </div>
             <a href="https://efatcat.github.io/TheThingGame" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
         </div>
+
+        <!-- Rapid Racer (новая игра от KotKotkin) -->
+        <div class="game-card" data-game-url="https://efatcat.github.io/rapidracer6">
+            <div class="game-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a2a3a'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%23e4b363'%3E🏎️%3C/text%3E%3C/svg%3E" alt="Rapid Racer">
+            </div>
+            <div class="game-title">Rapid Racer</div>
+            <div class="author-block">
+                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/kotkotkin">KotKotkin</span>
+            </div>
+            <a href="https://efatcat.github.io/rapidracer6" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
+        </div>
+
+        <!-- Minotavr (новая игра от KotKotkin) -->
+        <div class="game-card" data-game-url="https://efatcat.github.io/minotavr1">
+            <div class="game-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231a2a3a'/%3E%3Ctext x='50' y='55' font-size='40' text-anchor='middle' fill='%23e4b363'%3E🐂%3C/text%3E%3C/svg%3E" alt="Minotavr">
+            </div>
+            <div class="game-title">Minotavr</div>
+            <div class="author-block">
+                <span class="author-name" data-author-page="https://efatcat.github.io/h/avtor/kotkotkin">KotKotkin</span>
+            </div>
+            <a href="https://efatcat.github.io/minotavr1" class="game-link" target="_blank" rel="noopener noreferrer">Играть →</a>
+        </div>
     </div>
 
     <!-- Рекомендации (случайные игры из всех доступных) -->
@@ -487,7 +511,7 @@
 
 <script>
     (function() {
-        // База всех игр (для каталога и рекомендаций)
+        // База всех игр (для каталога и рекомендаций) - с добавленными играми KotKotkin
         const gamesLibrary = [
             {
                 title: "Angry Cat 3",
@@ -526,11 +550,25 @@
                 authors: [{ name: "Hleb Game Official", page: "https://efatcat.github.io/h/avtor/hleb-game-off" }],
                 image: null,
                 fallbackIcon: "💰"
+            },
+            {
+                title: "Rapid Racer",
+                url: "https://efatcat.github.io/rapidracer6",
+                authors: [{ name: "KotKotkin", page: "https://efatcat.github.io/h/avtor/kotkotkin" }],
+                image: null,
+                fallbackIcon: "🏎️"
+            },
+            {
+                title: "Minotavr",
+                url: "https://efatcat.github.io/minotavr1",
+                authors: [{ name: "KotKotkin", page: "https://efatcat.github.io/h/avtor/kotkotkin" }],
+                image: null,
+                fallbackIcon: "🐂"
             }
         ];
 
         // Функция для получения случайных игр
-        function getRandomGames(arr, count = 3) {
+        function getRandomGames(arr, count = 4) {
             const shuffled = [...arr];
             for (let i = shuffled.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
