@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>HLEB GAME — платформа ИИ-игр</title>
-    <!-- Шрифт Unbounded -->
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Подключение кастомного шрифта Rostov.ttf -->
+    <style>
+        @font-face {
+            font-family: 'Rostov';
+            src: url('Rostov.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Rostov';
+            src: url('Rostov.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <style>
         * {
             margin: 0;
@@ -15,7 +33,8 @@
 
         body {
             background: #0a0c10;
-            font-family: 'Unbounded', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            /* Основной шрифт — Rostov, с fallback на системные */
+            font-family: 'Rostov', 'Unbounded', system-ui, -apple-system, 'Segoe UI', sans-serif;
             color: #f0f3f8;
             line-height: 1.4;
             overflow-x: hidden;
@@ -107,6 +126,7 @@
             color: transparent;
             margin-bottom: 0.75rem;
             animation: glowPulse 2s infinite alternate;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
         .tagline {
@@ -120,6 +140,7 @@
             border-radius: 40px;
             border: 1px solid rgba(228, 179, 99, 0.3);
             letter-spacing: 0.3px;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
         .section-title {
@@ -130,6 +151,7 @@
             color: #e4b363;
             border-left: 3px solid #e4b363;
             padding-left: 1rem;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
         .games-grid {
@@ -190,6 +212,7 @@
             -webkit-background-clip: text;
             color: transparent;
             margin-bottom: 0.4rem;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
         .author-block {
@@ -215,6 +238,7 @@
             font-size: 0.65rem;
             text-decoration: none;
             border: 0.5px solid rgba(228,179,99,0.3);
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
         .author-name:hover {
@@ -234,6 +258,7 @@
             font-weight: 500;
             font-size: 0.75rem;
             transition: all 0.25s;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
         .game-link:hover {
@@ -288,84 +313,107 @@
             font-size: 0.9rem;
             font-weight: 600;
             color: #f3e5c0;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
-        /* Стили для блока Яндекс.Формы (вместо Google Form) */
-        .yandex-form-section {
-            margin: 2rem auto 1rem;
+        /* Стили для нового блока со ссылкой на Яндекс Форму (вместо iframe) */
+        .yandex-link-section {
+            margin: 2rem auto 1.5rem;
             max-width: 750px;
             background: rgba(12, 15, 22, 0.75);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(228, 179, 99, 0.4);
+            border: 1px solid rgba(228, 179, 99, 0.45);
             border-radius: 2.2rem;
-            padding: 1.2rem 1.2rem 1.5rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            padding: 1.5rem 1.8rem;
+            transition: all 0.35s ease;
+            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.6);
+            text-align: center;
         }
 
-        .yandex-form-section:hover {
-            border-color: rgba(228, 179, 99, 0.7);
-            box-shadow: 0 0 20px rgba(228, 179, 99, 0.15);
+        .yandex-link-section:hover {
+            border-color: rgba(228, 179, 99, 0.85);
+            box-shadow: 0 0 28px rgba(228, 179, 99, 0.2);
+            transform: translateY(-3px);
         }
 
         .dev-header {
             display: flex;
             align-items: baseline;
-            justify-content: space-between;
+            justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 1rem;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
             border-bottom: 1px dashed rgba(228, 179, 99, 0.4);
-            padding-bottom: 0.6rem;
+            padding-bottom: 0.7rem;
         }
 
         .dev-badge {
-            font-size: 0.7rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            background: rgba(228, 179, 99, 0.18);
-            padding: 0.2rem 0.9rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            background: rgba(228, 179, 99, 0.2);
+            padding: 0.3rem 1.2rem;
             border-radius: 100px;
             color: #e4b363;
             text-transform: uppercase;
             backdrop-filter: blur(4px);
-            border: 0.5px solid rgba(228,179,99,0.5);
+            border: 0.5px solid rgba(228,179,99,0.6);
+            font-family: 'Rostov', monospace;
         }
 
         .dev-title {
             font-size: 0.85rem;
             font-weight: 500;
-            color: #b9c7e4;
+            color: #cddef5;
             letter-spacing: 0.3px;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
         }
 
-        .form-wrapper {
-            display: flex;
-            justify-content: center;
+        .yandex-button-link {
+            display: inline-flex;
             align-items: center;
-            width: 100%;
-            border-radius: 1.3rem;
-            overflow: hidden;
-            transition: transform 0.2s;
+            justify-content: center;
+            gap: 0.75rem;
+            background: linear-gradient(105deg, rgba(228, 179, 99, 0.12) 0%, rgba(228, 179, 99, 0.04) 100%);
+            border: 1.5px solid rgba(228, 179, 99, 0.7);
+            padding: 1rem 2rem;
+            border-radius: 80px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            color: #FFEFCF;
+            font-family: 'Rostov', 'Unbounded', sans-serif;
+            backdrop-filter: blur(8px);
+            margin: 1rem 0 0.6rem;
+            letter-spacing: 0.5px;
         }
 
-        .yandex-form-iframe {
-            width: 100%;
-            min-height: 520px;
-            border: none;
-            border-radius: 1.2rem;
-            background: rgba(20, 24, 34, 0.5);
+        .yandex-button-link:hover {
+            background: #e4b363;
+            color: #0a0c10;
+            border-color: #e4b363;
+            box-shadow: 0 0 20px rgba(228, 179, 99, 0.5);
+            transform: scale(1.02);
+            gap: 1rem;
         }
 
-        @media (max-width: 700px) {
-            .yandex-form-section {
-                padding: 0.9rem;
-            }
-            .yandex-form-iframe {
-                min-height: 580px;
-            }
-            .dev-badge {
-                font-size: 0.6rem;
-            }
+        .form-hint {
+            font-size: 0.7rem;
+            margin-top: 1rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            font-family: 'Rostov', system-ui, sans-serif;
+        }
+
+        .form-hint span {
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
         }
 
         .glow-spot {
@@ -393,6 +441,7 @@
             color: #5f6e85;
             border-top: 1px solid rgba(228,179,99,0.2);
             padding-top: 2rem;
+            font-family: 'Rostov', system-ui, sans-serif;
         }
 
         @media (max-width: 650px) {
@@ -405,6 +454,13 @@
             }
             .logo-svg {
                 width: 100px;
+            }
+            .yandex-button-link {
+                font-size: 0.9rem;
+                padding: 0.7rem 1.4rem;
+            }
+            .dev-badge {
+                font-size: 0.65rem;
             }
         }
     </style>
@@ -534,25 +590,25 @@
     <div class="section-title">🎲 Вам также может понравиться</div>
     <div class="recommendations-grid" id="recGrid"></div>
 
-    <!-- Новая секция: Яндекс Форма вместо Google Form с надписью "для разработчиков" -->
-    <div class="yandex-form-section">
+    <!-- Блок с ссылкой на Яндекс Форму вместо iframe + "для разработчиков" -->
+    <div class="yandex-link-section">
         <div class="dev-header">
-            <span class="dev-badge">🔧 для разработчиков</span>
-            <span class="dev-title">подача игры / интеграция ИИ-проектов</span>
+            <span class="dev-badge">🛠️ для разработчиков</span>
+            <span class="dev-title">размещение AI-игр · партнёрство</span>
         </div>
-        <div class="form-wrapper">
-            <iframe 
-                src="https://forms.yandex.ru/cloud/69ff8558e010db1eef658bee?iframe=1" 
-                frameborder="0" 
-                name="ya-form-69ff8558e010db1eef658bee" 
-                class="yandex-form-iframe"
-                title="Яндекс Форма для разработчиков HLEB GAME"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+        <a href="https://forms.yandex.ru/cloud/69ff8558e010db1eef658bee/" 
+           class="yandex-button-link" 
+           target="_blank" 
+           rel="noopener noreferrer">
+            📋 Перейти к Яндекс Форме →
+        </a>
+        <div class="form-hint">
+            <span>🔹 Заявка на добавление игры</span>
+            <span>🔹 Интеграция с ИИ-механиками</span>
+            <span>🔹 Стать частью экосистемы</span>
         </div>
-        <div style="text-align: center; margin-top: 0.5rem; font-size: 0.65rem; opacity: 0.6;">
-            ✨ Заявки на размещение игр, партнёрство и AI-коллаборации
+        <div style="margin-top: 0.7rem; font-size: 0.65rem; opacity: 0.65;">
+            ✨ Быстрая регистрация проекта через форму — после модерации игра попадёт в каталог
         </div>
     </div>
 
