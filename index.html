@@ -290,45 +290,82 @@
             color: #f3e5c0;
         }
 
-        .google-form-block {
+        /* Стили для блока Яндекс.Формы (вместо Google Form) */
+        .yandex-form-section {
             margin: 2rem auto 1rem;
-            max-width: 600px;
-            background: rgba(18, 22, 32, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(228, 179, 99, 0.3);
-            border-radius: 2rem;
-            padding: 1rem 1.5rem;
+            max-width: 750px;
+            background: rgba(12, 15, 22, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(228, 179, 99, 0.4);
+            border-radius: 2.2rem;
+            padding: 1.2rem 1.2rem 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+        }
+
+        .yandex-form-section:hover {
+            border-color: rgba(228, 179, 99, 0.7);
+            box-shadow: 0 0 20px rgba(228, 179, 99, 0.15);
+        }
+
+        .dev-header {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 1rem;
-            text-align: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed rgba(228, 179, 99, 0.4);
+            padding-bottom: 0.6rem;
         }
 
-        .form-text {
+        .dev-badge {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            background: rgba(228, 179, 99, 0.18);
+            padding: 0.2rem 0.9rem;
+            border-radius: 100px;
+            color: #e4b363;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+            border: 0.5px solid rgba(228,179,99,0.5);
+        }
+
+        .dev-title {
             font-size: 0.85rem;
-            color: #cfdef5;
             font-weight: 500;
+            color: #b9c7e4;
+            letter-spacing: 0.3px;
         }
 
-        .form-link {
-            background: rgba(228, 179, 99, 0.12);
-            border: 1px solid rgba(228, 179, 99, 0.5);
-            padding: 0.5rem 1.2rem;
-            border-radius: 60px;
-            text-decoration: none;
-            color: #f5e2b0;
-            font-size: 0.8rem;
-            font-weight: 500;
-            transition: all 0.25s;
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            border-radius: 1.3rem;
+            overflow: hidden;
+            transition: transform 0.2s;
         }
 
-        .form-link:hover {
-            background: #e4b363;
-            color: #0a0c10;
-            border-color: #e4b363;
-            box-shadow: 0 0 12px rgba(228,179,99,0.5);
+        .yandex-form-iframe {
+            width: 100%;
+            min-height: 520px;
+            border: none;
+            border-radius: 1.2rem;
+            background: rgba(20, 24, 34, 0.5);
+        }
+
+        @media (max-width: 700px) {
+            .yandex-form-section {
+                padding: 0.9rem;
+            }
+            .yandex-form-iframe {
+                min-height: 580px;
+            }
+            .dev-badge {
+                font-size: 0.6rem;
+            }
         }
 
         .glow-spot {
@@ -497,10 +534,26 @@
     <div class="section-title">🎲 Вам также может понравиться</div>
     <div class="recommendations-grid" id="recGrid"></div>
 
-    <!-- Google форма -->
-    <div class="google-form-block">
-        <span class="form-text">📋 Чтобы разместить свою игру на платформе, заполните Google-форму</span>
-        <a href="https://forms.gle/3iGPebpzUj76Xtci8" class="form-link" target="_blank" rel="noopener noreferrer">Подать заявку →</a>
+    <!-- Новая секция: Яндекс Форма вместо Google Form с надписью "для разработчиков" -->
+    <div class="yandex-form-section">
+        <div class="dev-header">
+            <span class="dev-badge">🔧 для разработчиков</span>
+            <span class="dev-title">подача игры / интеграция ИИ-проектов</span>
+        </div>
+        <div class="form-wrapper">
+            <iframe 
+                src="https://forms.yandex.ru/cloud/69ff8558e010db1eef658bee?iframe=1" 
+                frameborder="0" 
+                name="ya-form-69ff8558e010db1eef658bee" 
+                class="yandex-form-iframe"
+                title="Яндекс Форма для разработчиков HLEB GAME"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        <div style="text-align: center; margin-top: 0.5rem; font-size: 0.65rem; opacity: 0.6;">
+            ✨ Заявки на размещение игр, партнёрство и AI-коллаборации
+        </div>
     </div>
 
     <footer>
@@ -511,7 +564,7 @@
 
 <script>
     (function() {
-        // База всех игр (для каталога и рекомендаций) - с добавленными играми KotKotkin
+        // База всех игр (для каталога и рекомендаций)
         const gamesLibrary = [
             {
                 title: "Angry Cat 3",
@@ -567,7 +620,6 @@
             }
         ];
 
-        // Функция для получения случайных игр
         function getRandomGames(arr, count = 4) {
             const shuffled = [...arr];
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -577,7 +629,6 @@
             return shuffled.slice(0, Math.min(count, arr.length));
         }
 
-        // Отрисовка рекомендаций
         const recGrid = document.getElementById('recGrid');
         if (recGrid) {
             recGrid.innerHTML = '';
@@ -618,7 +669,6 @@
             });
         }
 
-        // Обработка кликов по авторам
         function bindAuthorClicks() {
             const authorSpans = document.querySelectorAll('.author-name');
             authorSpans.forEach(authorSpan => {
@@ -632,7 +682,6 @@
             });
         }
 
-        // Обработка кликов по карточкам
         function bindCardClicks() {
             const gameCards = document.querySelectorAll('.game-card');
             gameCards.forEach(card => {
@@ -654,7 +703,6 @@
         bindAuthorClicks();
         bindCardClicks();
 
-        // Эффект слежения за мышью
         const glowSpot = document.querySelector('.glow-spot');
         if (glowSpot) {
             document.addEventListener('mousemove', (e) => {
