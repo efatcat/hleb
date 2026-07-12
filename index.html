@@ -638,7 +638,7 @@
         <div class="tagline">платформа ИИ-игр</div>
     </div>
 
-    <!-- Улучшенный поиск: по создателям И по названиям игр -->
+    <!-- Поисковая панель -->
     <div class="search-section" id="searchSection">
         <span class="search-icon">🔍</span>
         <input type="text" class="search-input" id="searchInput" placeholder="Поиск по играм и создателям..." autocomplete="off">
@@ -649,7 +649,7 @@
     <!-- Каталог игр -->
     <div class="section-title">
         ✦ Каталог игр
-        <span class="badge" id="gameCountBadge">7</span>
+        <span class="badge" id="gameCountBadge">8</span>
     </div>
     <div class="games-grid" id="allGamesGrid">
         <!-- Карточки заполняются через JS -->
@@ -690,7 +690,9 @@
 
 <script>
     (function() {
-        // БИБЛИОТЕКА ИГР (актуальный список)
+        // ОБНОВЛЁННАЯ БИБЛИОТЕКА ИГР
+        // - Kolblocks переименован в "Qubes Платформер"
+        // - В Drifting & Tuning (BETA) добавлен KotKotkin как соавтор
         const gamesLibrary = [
             { 
                 title: "Neon Revenant", 
@@ -710,6 +712,7 @@
                 image: null, 
                 fallbackIcon: "🌀" 
             },
+            // ПЕРЕИМЕНОВАНА ИГРА
             { 
                 title: "Qubes Платформер", 
                 url: "https://efatcat.github.io/kolblocks", 
@@ -717,7 +720,7 @@
                     { name: "Hleb Game Official", page: "https://efatcat.github.io/h/avtor/hleb-game-off" }
                 ], 
                 image: "https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2NotCTNzdENykHI__Mau_7PpqDL_i6iagkBC3ooC5OrownA", 
-                fallbackIcon: "🟦" 
+                fallbackIcon: "🧩" 
             },
             { 
                 title: "Buy Things", 
@@ -754,6 +757,17 @@
                 ], 
                 image: "https://i.oneme.ru/i?r=BTE2sh_eZW7g8kugOdIm2NotdLT0LU5Y_msFronZ6y3WFzL_i6iagkBC3ooC5OrownA", 
                 fallbackIcon: "🏃" 
+            },
+            // ДОБАВЛЕН КОЛЛАБОРАТОР KotKotkin
+            { 
+                title: "Drifting & Tuning (BETA)", 
+                url: "https://urlit.github.io/dr-drb3", 
+                authors: [
+                    { name: "Hleb Game Official", page: "https://efatcat.github.io/h/avtor/hleb-game-off" },
+                    { name: "KotKotkin", page: "https://efatcat.github.io/h/avtor/kotkotkin" }
+                ], 
+                image: "https://i.oneme.ru/i?r=BUE2sh_eZW7g8kugOdIm2NotKfoK7ZtG0xl0GLP2pdQLVFUPut-uyUp4TL27EA1GuHC-lVzsyQysV3DaVqjHCp2E&expires=1783872401475", 
+                fallbackIcon: "🚗" 
             }
         ];
 
@@ -885,7 +899,7 @@
             });
         }
 
-        // --- НОВАЯ ФИЛЬТРАЦИЯ: ПО ИГРАМ И СОЗДАТЕЛЯМ ---
+        // --- Фильтрация по играм и создателям ---
         function filterGames(query) {
             const trimmed = query.trim().toLowerCase();
             if (trimmed === '') {
@@ -897,9 +911,7 @@
             searchClear.classList.add('visible');
             
             const filtered = gamesLibrary.filter(game => {
-                // Поиск по названию игры
                 const titleMatch = game.title.toLowerCase().includes(trimmed);
-                // Поиск по именам авторов
                 const authorMatch = game.authors.some(author => 
                     author.name.toLowerCase().includes(trimmed)
                 );
