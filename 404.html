@@ -10,6 +10,8 @@
   --bg:#0a0c10; --card:rgba(18,22,32,.7); --gold:#e4b363;
   --gold-soft:#f5dc9a; --text:#f0f3f8; --dim:#94a3b8; --mute:#5f6e85;
   --border:rgba(228,179,99,.3);
+  --skeleton:rgba(255,255,255,.06);
+  --skeleton-shine:rgba(255,255,255,.12);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{
@@ -100,11 +102,67 @@ h1{font-size:clamp(2rem,7vw,4rem);font-weight:800;
 footer{text-align:center;margin-top:3rem;font-size:.7rem;color:var(--mute);
   border-top:1px solid rgba(228,179,99,.2);padding-top:2rem}
 
+/* ================== SKELETON ================== */
+@keyframes shimmer{
+  0%{background-position:-468px 0}
+  100%{background-position:468px 0}
+}
+.sk{
+  background:#0e121b;
+  background-image:linear-gradient(
+    90deg,
+    #0e121b 0px,
+    #1a2130 40px,
+    #1f2738 80px,
+    #1a2130 120px,
+    #0e121b 160px
+  );
+  background-size:468px 100%;
+  background-repeat:no-repeat;
+  animation:shimmer 1.4s linear infinite;
+  border-radius:10px;
+}
+.sk-circle{border-radius:50%}
+
+/* Hero skeleton */
+.sk-hero{
+  position:relative;display:flex;flex-direction:column;
+  align-items:center;text-align:center;margin-bottom:2.5rem;
+  padding:2.5rem 1.5rem 2rem;border-radius:2rem;
+  border:1px solid var(--border);
+  background:rgba(18,22,32,.55);
+  box-shadow:0 12px 28px -8px rgba(0,0,0,.5);
+}
+.sk-avatar{width:140px;height:140px;margin-bottom:1.5rem;
+  border:2px solid rgba(228,179,99,.15)}
+.sk-name{width:220px;height:38px;margin-bottom:.75rem;border-radius:12px}
+.sk-badge{width:170px;height:24px;border-radius:40px}
+.sk-bio{width:280px;height:14px;margin-top:1rem;border-radius:8px}
+
+/* Section title skeleton */
+.sk-title{width:120px;height:26px;margin:2rem 0 1.5rem;border-radius:8px}
+
+/* Game card skeleton */
+.sk-card{background:rgba(18,22,32,.55);backdrop-filter:blur(12px);
+  border-radius:2rem;border:1px solid rgba(228,179,99,.15);
+  padding:1.5rem 1.5rem 1.8rem;width:260px;text-align:center;
+  box-shadow:0 12px 28px -8px rgba(0,0,0,.5)}
+.sk-image{width:100%;aspect-ratio:1/1;border-radius:1.2rem;margin-bottom:1rem}
+.sk-gtitle{width:80%;height:20px;margin:0 auto .8rem;border-radius:8px}
+.sk-glink{width:110px;height:32px;margin:0 auto;border-radius:60px}
+
+.skeleton-wrap{display:none}
+.skeleton-wrap.visible{display:block}
+.real-wrap{display:none}
+.real-wrap.visible{display:block}
+
+/* ================== /SKELETON ================== */
+
 @media(max-width:650px){
   .container{padding:2rem 1.2rem}
-  .game-card{width:100%;max-width:280px}
-  .avatar{width:110px;height:110px}
-  .hero{padding:2rem 1rem 1.5rem}
+  .game-card,.sk-card{width:100%;max-width:280px}
+  .avatar,.sk-avatar{width:110px;height:110px}
+  .hero,.sk-hero{padding:2rem 1rem 1.5rem}
 }
 </style>
 </head>
@@ -116,17 +174,49 @@ footer{text-align:center;margin-top:3rem;font-size:.7rem;color:var(--mute);
 <div class="container">
   <a href="/hleb/index.html" class="back">← На главную HLEB GAME</a>
 
-  <a class="hero" id="hero" target="_blank" rel="noopener noreferrer">
-    <div class="hero-bg" id="heroBg"></div>
-    <div class="avatar" id="avatar"><div class="fallback">👤</div></div>
-    <h1 id="authorName">Автор</h1>
-    <div class="badge" id="authorBadge">✦ создатель ИИ-игр ✦</div>
-    <div class="bio" id="authorBio"></div>
-  </a>
+  <!-- ========== SKELETON (заглушка во время загрузки) ========== -->
+  <div class="skeleton-wrap visible" id="skeleton">
+    <div class="sk-hero">
+      <div class="sk sk-circle sk-avatar"></div>
+      <div class="sk sk-name"></div>
+      <div class="sk sk-badge"></div>
+      <div class="sk sk-bio"></div>
+    </div>
 
-  <div class="section-title">✦ Игры</div>
-  <div class="games-grid" id="gamesGrid"></div>
-  <div class="empty" id="emptyState" style="display:none">У автора пока нет игр</div>
+    <div class="sk sk-title"></div>
+    <div class="games-grid" id="skGames">
+      <div class="sk-card">
+        <div class="sk sk-image"></div>
+        <div class="sk sk-gtitle"></div>
+        <div class="sk sk-glink"></div>
+      </div>
+      <div class="sk-card">
+        <div class="sk sk-image"></div>
+        <div class="sk sk-gtitle"></div>
+        <div class="sk sk-glink"></div>
+      </div>
+      <div class="sk-card">
+        <div class="sk sk-image"></div>
+        <div class="sk sk-gtitle"></div>
+        <div class="sk sk-glink"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== РЕАЛЬНЫЙ КОНТЕНТ ========== -->
+  <div class="real-wrap" id="real">
+    <a class="hero" id="hero" target="_blank" rel="noopener noreferrer">
+      <div class="hero-bg" id="heroBg"></div>
+      <div class="avatar" id="avatar"><div class="fallback">👤</div></div>
+      <h1 id="authorName">Автор</h1>
+      <div class="badge" id="authorBadge">✦ создатель ИИ-игр ✦</div>
+      <div class="bio" id="authorBio"></div>
+    </a>
+
+    <div class="section-title">✦ Игры</div>
+    <div class="games-grid" id="gamesGrid"></div>
+    <div class="empty" id="emptyState" style="display:none">У автора пока нет игр</div>
+  </div>
 
   <footer>
     HLEB GAME © 2026 — система ИИ-игр<br>
@@ -150,6 +240,18 @@ function getSlug(){
 const ROOT        = '/hleb';
 const AUTHORS_DIR = ROOT + '/avtor/authors';
 const GAMEX_DIR   = ROOT + '/avtor/gamexes';
+
+const skeleton = document.getElementById('skeleton');
+const realWrap = document.getElementById('real');
+
+function showSkeleton(){
+  skeleton.classList.add('visible');
+  realWrap.classList.remove('visible');
+}
+function showReal(){
+  skeleton.classList.remove('visible');
+  realWrap.classList.add('visible');
+}
 
 function parseAuthorx(text){
   const o = {};
@@ -309,15 +411,30 @@ function renderGames(games){
 
 (async function init(){
   const slug = getSlug();
+
   if(!slug){
+    showReal();
     document.getElementById('authorName').textContent = 'Автор не найден';
+    document.getElementById('authorBadge').textContent = 'нет имени в URL';
     document.getElementById('gamesGrid').innerHTML =
       '<div class="empty">В URL нет имени автора. Пример: /avtor/cactusini</div>';
     return;
   }
 
-  const author = await loadAuthor(slug);
+  // Показываем skeleton сразу
+  showSkeleton();
+
+  // Минимум 400мс заглушки, чтобы не мигало при быстрой загрузке
+  const minDelay = new Promise(res => setTimeout(res, 400));
+
+  const [author, games] = await Promise.all([
+    loadAuthor(slug),
+    loadAuthorGames(slug),
+    minDelay
+  ]);
+
   if(!author){
+    showReal();
     document.getElementById('authorName').textContent = slug;
     document.getElementById('authorBadge').textContent = 'профиль не найден';
     document.getElementById('gamesGrid').innerHTML =
@@ -326,7 +443,8 @@ function renderGames(games){
   }
 
   renderAuthor(author, slug);
-  renderGames(await loadAuthorGames(slug));
+  renderGames(games);
+  showReal();
 })();
 })();
 </script>
