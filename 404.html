@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HLEB GAME — автор</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0c10; --card:rgba(18,22,32,.7); --gold:#e4b363;
+  --gold-soft:#f5dc9a; --text:#f0f3f8; --dim:#94a3b8; --mute:#5f6e85;
+  --border:rgba(228,179,99,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Unbounded',system-ui,sans-serif;line-height:1.4;
+  overflow-x:hidden;
+}
+.bg{position:fixed;inset:0;z-index:-2;
+  background:radial-gradient(circle at 20% 30%,#0f1219,#030507)}
+.grid{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(60,80,120,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(60,80,120,.08) 1px,transparent 1px);
+  background-size:48px 48px}
+.glow{position:fixed;width:70vw;height:70vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(228,179,99,.08),transparent 70%);
+  top:-20%;right:-20%;z-index:0;pointer-events:none}
+
+.container{max-width:1200px;margin:0 auto;padding:3rem 1.5rem 4rem;position:relative;z-index:2}
+
+.back{display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(18,22,32,.6);border-radius:60px;
+  padding:.5rem 1.2rem;margin-bottom:1.5rem;
+  text-decoration:none;color:#cfdef5;font-size:.8rem;
+  border:1px solid var(--border);cursor:pointer;transition:.2s}
+.back:hover{background:rgba(228,179,99,.2);color:var(--gold);border-color:var(--gold)}
+
+.hero{position:relative;display:flex;flex-direction:column;
+  align-items:center;text-align:center;margin-bottom:2.5rem;
+  padding:2.5rem 1.5rem 2rem;border-radius:2rem;
+  overflow:hidden;border:1px solid var(--border);
+  box-shadow:0 12px 28px -8px rgba(0,0,0,.5);
+  text-decoration:none;color:inherit;cursor:pointer;
+  transition:.35s}
+.hero:hover{transform:translateY(-4px);border-color:rgba(228,179,99,.7)}
+.hero-bg{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(to bottom,rgba(10,12,16,.35),rgba(10,12,16,.85)) center/cover no-repeat;
+  background-color:#0f1219;transition:transform .5s}
+.hero:hover .hero-bg{transform:scale(1.03)}
+.hero>*:not(.hero-bg){position:relative;z-index:1}
+
+.avatar{width:140px;height:140px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.5rem;border:2px solid rgba(228,179,99,.6);
+  box-shadow:0 0 30px rgba(228,179,99,.3);
+  overflow:hidden;background:linear-gradient(135deg,#2a2e3f,#141824)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar .fallback{font-size:3rem}
+
+h1{font-size:clamp(2rem,7vw,4rem);font-weight:800;
+  background:linear-gradient(135deg,#FFF6E0,#E4B363);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:.75rem}
+.badge{font-size:.8rem;background:rgba(228,179,99,.15);
+  padding:.3rem 1.2rem;border-radius:40px;
+  border:1px solid rgba(228,179,99,.4);color:var(--gold);font-weight:500}
+.bio{margin-top:.8rem;font-size:.8rem;color:#cddef5;max-width:560px}
+
+.section-title{font-size:1.5rem;font-weight:600;
+  margin:2rem 0 1.5rem;color:var(--gold);
+  border-left:3px solid var(--gold);padding-left:1rem}
+
+.games-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem}
+.game-card{background:var(--card);backdrop-filter:blur(12px);
+  border-radius:2rem;border:1px solid rgba(228,179,99,.25);
+  padding:1.5rem 1.5rem 1.8rem;width:260px;text-align:center;
+  cursor:pointer;transition:.35s;
+  box-shadow:0 12px 28px -8px rgba(0,0,0,.5)}
+.game-card:hover{transform:translateY(-8px) scale(1.02);
+  border-color:rgba(228,179,99,.7);background:rgba(25,30,42,.85)}
+.game-image{width:100%;aspect-ratio:1/1;border-radius:1.2rem;
+  overflow:hidden;margin-bottom:1rem;background:#0f121b;
+  display:flex;align-items:center;justify-content:center}
+.game-image img{width:100%;height:100%;object-fit:cover;display:block}
+.game-image .fallback{font-size:2.8rem}
+.game-title{font-size:1.3rem;font-weight:700;
+  background:linear-gradient(120deg,#f3e5c0,#e4b363);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:.8rem}
+.game-link{display:inline-block;background:rgba(228,179,99,.12);
+  border:1px solid rgba(228,179,99,.5);
+  padding:.5rem 1.2rem;border-radius:60px;
+  text-decoration:none;color:#f5e2b0;font-weight:500;
+  font-size:.75rem;transition:.25s}
+.game-link:hover{background:var(--gold);color:#0a0c10;border-color:var(--gold)}
+
+.empty{text-align:center;color:var(--mute);padding:2rem;font-size:.9rem}
+footer{text-align:center;margin-top:3rem;font-size:.7rem;color:var(--mute);
+  border-top:1px solid rgba(228,179,99,.2);padding-top:2rem}
+
+@media(max-width:650px){
+  .container{padding:2rem 1.2rem}
+  .game-card{width:100%;max-width:280px}
+  .avatar{width:110px;height:110px}
+  .hero{padding:2rem 1rem 1.5rem}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="grid"></div>
+<div class="glow"></div>
+
+<div class="container">
+  <a href="/hleb/index.html" class="back">← На главную HLEB GAME</a>
+
+  <a class="hero" id="hero" target="_blank" rel="noopener noreferrer">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="avatar" id="avatar"><div class="fallback">👤</div></div>
+    <h1 id="authorName">Автор</h1>
+    <div class="badge" id="authorBadge">✦ создатель ИИ-игр ✦</div>
+    <div class="bio" id="authorBio"></div>
+  </a>
+
+  <div class="section-title">✦ Игры</div>
+  <div class="games-grid" id="gamesGrid"></div>
+  <div class="empty" id="emptyState" style="display:none">У автора пока нет игр</div>
+
+  <footer>
+    HLEB GAME © 2026 — система ИИ-игр<br>
+    <span style="font-size:.65rem">нейросетевая платформа · каталог авторов</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+function getSlug(){
+  const parts = location.pathname.split('/').filter(Boolean);
+  const last = parts[parts.length - 1] || '';
+  if(last === 'avtor' || last === 'index.html' || last === 'hleb'){
+    return new URLSearchParams(location.search).get('author') || '';
+  }
+  return last.replace(/\.html$/i,'');
+}
+
+const ROOT        = '/hleb';
+const AUTHORS_DIR = ROOT + '/avtor/authors';
+const GAMEX_DIR   = ROOT + '/avtor/gamexes';
+
+function parseAuthorx(text){
+  const o = {};
+  text.split(/\r?\n/).forEach(raw=>{
+    const line = raw.trim();
+    if(!line || line.startsWith('#')) return;
+    const i = line.indexOf(':');
+    if(i === -1) return;
+    o[line.slice(0,i).trim().toLowerCase()] = line.slice(i+1).trim();
+  });
+  return o;
+}
+
+function parseGamex(text){
+  const g = { title:'', url:'', image:'', fallbackIcon:'🎮', authors:[] };
+  const aMap = {};
+  text.split(/\r?\n/).forEach(raw=>{
+    const line = raw.trim();
+    if(!line || line.startsWith('#')) return;
+    const i = line.indexOf(':');
+    if(i === -1) return;
+    const key = line.slice(0,i).trim().toLowerCase();
+    const val = line.slice(i+1).trim();
+    if(!val) return;
+    if(key==='title') g.title = val;
+    else if(key==='url') g.url = val;
+    else if(key==='image') g.image = val;
+    else if(key==='icon') g.fallbackIcon = val;
+    else if(/^author\d*$/.test(key)){
+      const n=(key.match(/\d+/)||[1])[0]|0||1;
+      (aMap[n]||={}).slug = val;
+    } else if(/^authorpage\d*$/.test(key)){
+      const n=(key.match(/\d+/)||[1])[0]|0||1;
+      (aMap[n]||={}).page = val;
+    }
+  });
+  Object.keys(aMap).map(Number).sort((a,b)=>a-b).forEach(n=>{
+    if(aMap[n].slug) g.authors.push(aMap[n]);
+  });
+  if(!g.image) g.image = null;
+  return (g.title && g.url) ? g : null;
+}
+
+async function loadAuthor(slug){
+  try{
+    const r = await fetch(`${AUTHORS_DIR}/${slug}.authorx`, {cache:'no-store'});
+    if(!r.ok) return null;
+    return parseAuthorx(await r.text());
+  }catch(e){ return null; }
+}
+
+async function loadAuthorGames(slug){
+  let files = [];
+  try{
+    const r = await fetch(`${GAMEX_DIR}/index.json`, {cache:'no-store'});
+    if(r.ok) files = await r.json();
+  }catch(e){}
+  if(!Array.isArray(files) || !files.length) return [];
+
+  const results = await Promise.all(files.map(async name=>{
+    const clean = String(name).replace(/\.gamex$/i,'').trim();
+    if(!clean) return null;
+    try{
+      const r = await fetch(`${GAMEX_DIR}/${clean}.gamex`, {cache:'no-store'});
+      if(!r.ok) return null;
+      const g = parseGamex(await r.text());
+      if(!g) return null;
+      if(!g.authors.some(a=>a.slug === slug)) return null;
+      return g;
+    }catch(e){ return null; }
+  }));
+  return results.filter(Boolean);
+}
+
+function renderAuthor(a, slug){
+  const nameEl  = document.getElementById('authorName');
+  const badgeEl = document.getElementById('authorBadge');
+  const bioEl   = document.getElementById('authorBio');
+  const avEl    = document.getElementById('avatar');
+  const hero    = document.getElementById('hero');
+  const bgEl    = document.getElementById('heroBg');
+
+  nameEl.textContent = a.name || slug;
+  badgeEl.textContent = a.badge || '✦ создатель ИИ-игр ✦';
+
+  if(a.bio){
+    bioEl.textContent = a.bio;
+  } else if(bioEl){
+    bioEl.remove();
+  }
+
+  if(a.avatar){
+    avEl.innerHTML = `<img src="${a.avatar}" alt="${a.name||slug}">`;
+  } else {
+    avEl.innerHTML = `<div class="fallback">👤</div>`;
+  }
+
+  if(a.banner){
+    bgEl.style.background =
+      `linear-gradient(to bottom,rgba(10,12,16,.35),rgba(10,12,16,.85)),`+
+      `url('${a.banner}') center top / cover no-repeat`;
+  }
+  if(a.bannerlink){
+    hero.href = a.bannerlink;
+  } else {
+    hero.removeAttribute('href');
+    hero.style.cursor = 'default';
+  }
+
+  document.title = `${a.name || slug} — страница автора`;
+}
+
+function renderGames(games){
+  const grid  = document.getElementById('gamesGrid');
+  const empty = document.getElementById('emptyState');
+  grid.innerHTML = '';
+
+  if(!games.length){
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  games.forEach((g, idx)=>{
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.style.animationDelay = `${idx*0.07}s`;
+
+    const imgDiv = document.createElement('div');
+    imgDiv.className = 'game-image';
+    if(g.image){
+      const img = document.createElement('img');
+      img.src = g.image; img.alt = g.title; img.loading = 'lazy';
+      img.onerror = ()=>{ imgDiv.innerHTML = `<div class="fallback">${g.fallbackIcon}</div>`; };
+      imgDiv.appendChild(img);
+    } else {
+      imgDiv.innerHTML = `<div class="fallback">${g.fallbackIcon}</div>`;
+    }
+
+    const title = document.createElement('div');
+    title.className = 'game-title';
+    title.textContent = g.title;
+
+    const link = document.createElement('a');
+    link.className = 'game-link';
+    link.href = g.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+    link.textContent = 'Играть →';
+
+    card.append(imgDiv, title, link);
+    card.onclick = e=>{
+      if(e.target === link || link.contains(e.target)) return;
+      window.open(g.url,'_blank','noopener,noreferrer');
+    };
+    grid.appendChild(card);
+  });
+}
+
+(async function init(){
+  const slug = getSlug();
+  if(!slug){
+    document.getElementById('authorName').textContent = 'Автор не найден';
+    document.getElementById('gamesGrid').innerHTML =
+      '<div class="empty">В URL нет имени автора. Пример: /avtor/cactusini</div>';
+    return;
+  }
+
+  const author = await loadAuthor(slug);
+  if(!author){
+    document.getElementById('authorName').textContent = slug;
+    document.getElementById('authorBadge').textContent = 'профиль не найден';
+    document.getElementById('gamesGrid').innerHTML =
+      `<div class="empty">Файл <code>avtor/authors/${slug}.authorx</code> не найден</div>`;
+    return;
+  }
+
+  renderAuthor(author, slug);
+  renderGames(await loadAuthorGames(slug));
+})();
+})();
+</script>
+</body>
+</html>
