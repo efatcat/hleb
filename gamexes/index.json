@@ -6,5 +6,8 @@
   "amber-run",
   "pong",
   "cyclone",
-  "pentagon"
+  "pentagon",
+  "svs-shiny-snake",
+  "dodge-easy",
+  "buy-things"
 ]
