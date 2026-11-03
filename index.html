@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ============ БАЗА ============ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
 :root{
@@ -45,7 +44,6 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 
-/* ============ ФОН ============ */
 .bg-base{
   position:fixed;inset:0;z-index:-4;
   background:
@@ -72,21 +70,18 @@ body{
 .orb-2{width:50vw;height:50vw;max-width:640px;max-height:640px;bottom:-20%;left:-15%;
   background:radial-gradient(circle, rgba(90,140,230,.12), transparent 70%)}
 
-/* ============ КОНТЕЙНЕР ============ */
 .container{
   max-width:1240px;margin:0 auto;
   padding:1.4rem 1.5rem 4rem;
   position:relative;z-index:2;
 }
 
-/* ============ АНИМАЦИИ ============ */
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(22px)}
   to{opacity:1;transform:translateY(0)}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ============ ШАПКА ============ */
 .topbar{
   display:flex;align-items:center;gap:.85rem;
   padding:.4rem 0 1.2rem;
@@ -118,7 +113,6 @@ body{
   margin-top:2px;
 }
 
-/* ============ ПОИСК ============ */
 .search{
   max-width:680px;margin:0 auto 2.4rem;
   display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
@@ -159,7 +153,6 @@ body{
   white-space:nowrap;
 }
 
-/* ============ ЗАГОЛОВОК СЕКЦИИ ============ */
 .section-head{
   display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;
   margin:2.4rem 0 1.2rem;
@@ -192,7 +185,6 @@ body{
   text-transform:uppercase;letter-spacing:1px;font-weight:600;
 }
 
-/* ============ FOCUS СЕКЦИЯ ============ */
 .focus-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
@@ -282,12 +274,7 @@ body{
   box-shadow:0 0 18px rgba(233,190,105,.6);
 }
 
-/* ============ СЕТКА ИГР (общая) ============ */
-.games-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:1.4rem;
-}
+.games-grid,
 .rec-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
@@ -358,6 +345,8 @@ body{
   padding:.18rem .6rem;border-radius:30px;
   cursor:pointer;
   transition:all .25s;
+  text-decoration:none;
+  display:inline-block;
 }
 .author-chip:hover{
   background:var(--gold);color:#0b0e14;
@@ -390,7 +379,6 @@ body{
 }
 .play-btn:hover::before{transform:translateX(100%)}
 
-/* ============ DEV-БЛОК ============ */
 .dev-block{
   margin:3rem auto 1.5rem;max-width:720px;
   background:linear-gradient(160deg,rgba(20,26,38,.85),rgba(12,17,26,.9));
@@ -401,7 +389,6 @@ body{
   transition:all .4s var(--ease);
   box-shadow:var(--shadow-card);
   animation:fadeUp .7s .15s var(--ease) both;
-  position:relative;overflow:hidden;
 }
 .dev-block:hover{
   transform:translateY(-4px);
@@ -451,7 +438,6 @@ body{
 }
 .note{margin-top:.7rem;font-size:.6rem;opacity:.6}
 
-/* ============ ПУСТЫЕ / НЕТ РЕЗУЛЬТАТОВ ============ */
 .empty{
   text-align:center;padding:1.8rem 0;
   color:var(--text-mute);font-size:.85rem;
@@ -464,7 +450,6 @@ body{
 }
 .no-results.visible{display:block}
 
-/* ============ ФУТЕР ============ */
 footer{
   margin-top:3.5rem;padding-top:2rem;
   border-top:1px solid rgba(233,190,105,.12);
@@ -472,7 +457,6 @@ footer{
   font-family:'Unbounded',sans-serif;line-height:1.9;
 }
 
-/* ============ LOADER ============ */
 .loader{
   position:fixed;inset:0;z-index:100;
   display:flex;flex-direction:column;
@@ -490,7 +474,6 @@ footer{
 }
 .loader-text{font-size:.78rem;color:var(--text-dim)}
 
-/* ============ АДАПТИВ ============ */
 @media (max-width:760px){
   .container{padding:1rem 1rem 3rem}
   .brand-logo{width:44px;height:44px}
@@ -526,15 +509,13 @@ footer{
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 
-<!-- Загрузка -->
 <div class="loader" id="loader">
   <div class="spinner"></div>
-  <div class="loader-text">Загрузка</div>
+  <div class="loader-text">Загрузка игр из gamexes…</div>
 </div>
 
 <div class="container">
 
-  <!-- ШАПКА: логотип + название в левом верхнем углу -->
   <header class="topbar">
     <img src="LOGOhg.png" alt="HLEB GAME" class="brand-logo">
     <div class="brand-text">
@@ -543,7 +524,6 @@ footer{
     </div>
   </header>
 
-  <!-- ПОИСК -->
   <div class="search">
     <span class="search-icon">🔍</span>
     <input type="text" class="search-input" id="searchInput"
@@ -552,7 +532,6 @@ footer{
     <span class="search-stats" id="searchStats">загрузка…</span>
   </div>
 
-  <!-- РЕЖИМ ПОИСКА: единая сетка результатов -->
   <div id="searchMode" style="display:none">
     <div class="section-head">
       <h2>🔎 Результаты поиска</h2>
@@ -562,10 +541,8 @@ footer{
     <div class="no-results" id="noResults">😕 Игр по вашему запросу не найдено</div>
   </div>
 
-  <!-- ОСНОВНОЙ РЕЖИМ: Фокус → Рекомендации → Все игры -->
   <div id="mainMode">
 
-    <!-- ФОКУС -->
     <section id="focusSection" style="display:none">
       <div class="section-head">
         <h2>🎯 Фокус</h2>
@@ -575,7 +552,6 @@ footer{
       <div class="focus-grid" id="focusGrid"></div>
     </section>
 
-    <!-- РЕКОМЕНДАЦИИ -->
     <section id="recSection">
       <div class="section-head">
         <h2>✨ Рекомендации</h2>
@@ -583,7 +559,6 @@ footer{
       <div class="rec-grid" id="recGrid"></div>
     </section>
 
-    <!-- ВСЕ ИГРЫ -->
     <section id="allSection">
       <div class="section-head">
         <h2>📚 Все игры</h2>
@@ -594,7 +569,6 @@ footer{
 
   </div>
 
-  <!-- DEV БЛОК -->
   <div class="dev-block">
     <div class="dev-head">
       <span class="dev-tag">🛠 для разработчиков</span>
@@ -622,19 +596,6 @@ footer{
 (function(){
 'use strict';
 
-/* =========================================================
-   ФОРМАТ .gamex:
-   title: Название игры
-   url: https://ссылка
-   image: https://картинка
-   icon: 🎮
-   focus: true        ← если указано true, игра попадает в «Фокус»
-   author: Имя
-   authorPage: https://страница
-   author2: Второй
-   authorPage2: https://...
-   ========================================================= */
-
 const MANIFEST_URL = 'gamexes/index.json';
 const GAMEX_DIR    = 'gamexes';
 
@@ -659,7 +620,7 @@ const gameCountBadge  = document.getElementById('gameCountBadge');
 
 let gamesLibrary = [];
 
-/* ---------- ПАРСЕР .gamex ---------- */
+/* ---------- Парсер .gamex ---------- */
 function parseGamex(text){
   const g = { title:'', url:'', image:'', fallbackIcon:'🎮', focus:false, authors:[] };
   const aMap = {};
@@ -699,7 +660,7 @@ function parseGamex(text){
   return g;
 }
 
-/* ---------- ЗАГРУЗКА ---------- */
+/* ---------- Загрузка ---------- */
 async function loadAllGames(){
   let files = [];
   try{
@@ -725,7 +686,7 @@ async function loadAllGames(){
   return results.filter(Boolean);
 }
 
-/* ---------- ХЕЛПЕРЫ ---------- */
+/* ---------- Хелперы ---------- */
 function makeThumb(g, cls){
   const thumb = document.createElement('div');
   thumb.className = cls;
@@ -744,7 +705,6 @@ function openGame(g){
   if(g.url && g.url !== '#') window.open(g.url,'_blank','noopener,noreferrer');
 }
 
-/* ---------- КАРТОЧКА (общая сетка) ---------- */
 function buildGameCard(g, idx){
   const card = document.createElement('div');
   card.className = 'game-card';
@@ -760,10 +720,11 @@ function buildGameCard(g, idx){
   authors.className = 'author-row';
   g.authors.forEach((a,i)=>{
     if(i>0) authors.appendChild(document.createTextNode(' · '));
-    const chip = document.createElement('span');
+    const chip = document.createElement('a');
     chip.className = 'author-chip';
     chip.textContent = a.name;
-    chip.onclick = e=>{ e.stopPropagation(); if(a.page && a.page!=='#') location.href = a.page; };
+    if(a.page && a.page !== '#') chip.href = a.page;
+    chip.onclick = e=>e.stopPropagation();
     authors.appendChild(chip);
   });
 
@@ -778,7 +739,6 @@ function buildGameCard(g, idx){
   return card;
 }
 
-/* ---------- КАРТОЧКА ФОКУСА ---------- */
 function buildFocusCard(g, idx){
   const card = document.createElement('div');
   card.className = 'focus-card';
@@ -813,7 +773,6 @@ function buildFocusCard(g, idx){
   return card;
 }
 
-/* ---------- РЕНДЕР: ВСЕ ИГРЫ ---------- */
 function renderAllGames(){
   allGamesGrid.innerHTML = '';
   if(!gamesLibrary.length){
@@ -825,7 +784,6 @@ function renderAllGames(){
   gamesLibrary.forEach((g,i)=> allGamesGrid.appendChild(buildGameCard(g,i)));
 }
 
-/* ---------- РЕНДЕР: ФОКУС ---------- */
 function renderFocus(){
   const focusGames = gamesLibrary.filter(g=>g.focus);
   if(!focusGames.length){
@@ -838,7 +796,6 @@ function renderFocus(){
   focusGames.forEach((g,i)=> focusGrid.appendChild(buildFocusCard(g,i)));
 }
 
-/* ---------- РЕНДЕР: РЕКОМЕНДАЦИИ ---------- */
 function renderRecommendations(){
   recGrid.innerHTML = '';
   if(!gamesLibrary.length){
@@ -854,7 +811,6 @@ function renderRecommendations(){
   pick.forEach((g,i)=> recGrid.appendChild(buildGameCard(g,i)));
 }
 
-/* ---------- ПОИСК ---------- */
 function runSearch(q){
   const s = q.trim().toLowerCase();
   if(!s){
@@ -887,14 +843,11 @@ function runSearch(q){
   searchStats.textContent = `найдено: ${found.length}`;
 }
 
-/* ---------- ИНИЦИАЛИЗАЦИЯ ---------- */
 async function init(){
   gamesLibrary = await loadAllGames();
-
   renderFocus();
   renderRecommendations();
   renderAllGames();
-
   searchStats.textContent = 'все игры';
   loader.classList.add('hidden');
 
