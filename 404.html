@@ -72,13 +72,34 @@
   .nav__back:hover svg{transform:translateX(-3px)}
 
   /* ---------- Hero ---------- */
-  .hero{padding:80px 0 48px;position:relative;overflow:hidden;text-align:center}
+  .hero{
+    position:relative;
+    padding:80px 0 48px;
+    overflow:hidden;
+    text-align:center;
+    margin-bottom:0;
+  }
+  .hero__banner{
+    position:absolute;inset:0;
+    background-size:cover;
+    background-position:center top;
+    background-repeat:no-repeat;
+    opacity:0;
+    transition:opacity .6s ease;
+    z-index:0;
+  }
+  .hero__banner.visible{opacity:1}
+  .hero__banner::after{
+    content:"";position:absolute;inset:0;
+    background:
+      linear-gradient(180deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.85) 60%, var(--bg) 100%);
+  }
   .hero::before{
     content:"";position:absolute;inset:0;
     background:radial-gradient(60% 50% at 50% 0%, rgba(255,255,255,.06), transparent 70%);
-    pointer-events:none;
+    pointer-events:none;z-index:1;
   }
-  .hero > .container{position:relative}
+  .hero > .container{position:relative;z-index:2}
   .hero__avatar{
     width:140px;height:140px;border-radius:50%;
     margin:0 auto 24px;
@@ -87,6 +108,7 @@
     display:flex;align-items:center;justify-content:center;
     font-size:52px;color:var(--muted);
     overflow:hidden;position:relative;
+    box-shadow:0 10px 30px rgba(0,0,0,.6);
   }
   .hero__avatar img{width:100%;height:100%;object-fit:cover}
   .hero__name{
@@ -94,10 +116,13 @@
     font-weight:800;letter-spacing:-.035em;
     line-height:1.05;
     margin-bottom:14px;
+    text-shadow:0 2px 20px rgba(0,0,0,.6);
   }
   .hero__badge{
     display:inline-flex;align-items:center;gap:8px;
-    background:var(--surface);border:1px solid var(--line);
+    background:rgba(20,20,20,.75);
+    backdrop-filter:blur(10px);
+    border:1px solid var(--line);
     padding:6px 14px;border-radius:999px;
     font-size:12px;color:var(--muted);font-weight:500;
     margin-bottom:20px;
@@ -180,6 +205,7 @@
   }
   .card__tag{
     font-size:11px;color:var(--muted);font-weight:500;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
   .card__play{
     font-size:12px;font-weight:700;color:var(--text);
@@ -327,7 +353,8 @@
 
 <!-- ====== REAL ====== -->
 <div class="real-wrap" id="real">
-  <section class="hero">
+  <section class="hero" id="hero">
+    <div class="hero__banner" id="heroBanner"></div>
     <div class="container">
       <div class="hero__avatar" id="authorAvatar">👤</div>
       <h1 class="hero__name" id="authorName">Автор</h1>
@@ -451,19 +478,22 @@ async function loadAuthorGames(slug){
   return results.filter(Boolean);
 }
 
+/* ✅ Рендер профиля с баннером */
 function renderAuthor(a, slug){
   const nameEl  = document.getElementById('authorName');
   const badgeEl = document.getElementById('authorBadge');
   const bioEl   = document.getElementById('authorBio');
   const avEl    = document.getElementById('authorAvatar');
+  const banner  = document.getElementById('heroBanner');
 
   nameEl.textContent = a.name || slug;
   badgeEl.textContent = a.badge || 'создатель ИИ-игр';
 
   if(a.bio){
     bioEl.textContent = a.bio;
+    bioEl.style.display = '';
   }else{
-    bioEl.remove();
+    bioEl.style.display = 'none';
   }
 
   if(a.avatar){
@@ -472,10 +502,16 @@ function renderAuthor(a, slug){
     avEl.textContent = '👤';
   }
 
+  if(a.banner){
+    banner.style.backgroundImage = `url('${a.banner}')`;
+    banner.classList.add('visible');
+  }
+
   document.title = `${a.name || slug} — HLEB GAME`;
 }
 
-function buildCard(g, i){
+/* ✅ Карточка игры: автор берётся из профиля, а не slug */
+function buildCard(g, i, authorName){
   const card = document.createElement('article');
   card.className = 'card';
   card.style.animationDelay = `${Math.min(i*0.05,0.5)}s`;
@@ -502,7 +538,8 @@ function buildCard(g, i){
 
   const tag = document.createElement('span');
   tag.className = 'card__tag';
-  tag.textContent = g.authors.map(a=>a.slug || a.name).join(' · ');
+  // Подпись автора — имя из профиля; если авторов несколько, перечисляем имена
+  tag.textContent = authorName || '';
 
   const play = document.createElement('span');
   play.className = 'card__play';
@@ -516,7 +553,7 @@ function buildCard(g, i){
   return card;
 }
 
-function renderGames(games){
+function renderGames(games, authorName){
   const grid = document.getElementById('gamesGrid');
   const empty = document.getElementById('emptyState');
   const count = document.getElementById('gamesCount');
@@ -528,7 +565,7 @@ function renderGames(games){
     return;
   }
   empty.style.display = 'none';
-  games.forEach((g,i)=> grid.appendChild(buildCard(g,i)));
+  games.forEach((g,i)=> grid.appendChild(buildCard(g,i,authorName)));
 }
 
 function showReal(){
@@ -574,7 +611,11 @@ function showSkeleton(){
   }
 
   renderAuthor(author, slug);
-  renderGames(games);
+
+  // ✅ В карточках показываем имя автора из профиля, а не slug
+  const displayName = author.name || slug;
+  renderGames(games, displayName);
+
   showReal();
 })();
 })();
