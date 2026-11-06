@@ -171,8 +171,7 @@
   .sec__head a:hover,.sec__head .link:hover{color:var(--text)}
 
   /* ---------- Grid ---------- */
-  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  .grid--3{grid-template-columns:repeat(3,1fr)}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
   .grid--focus{grid-template-columns:repeat(3,1fr);gap:18px}
 
   /* ---------- Card ---------- */
@@ -188,8 +187,8 @@
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
   .card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--line-2)}
   .card__cover{
-    aspect-ratio:3/4;position:relative;overflow:hidden;
-    display:flex;align-items:flex-end;padding:16px;
+    aspect-ratio:1/1;position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:14px;
     background:linear-gradient(135deg,#1e1e1e,#0f0f0f);
   }
   .card__cover img{
@@ -200,17 +199,17 @@
   .card:hover .card__cover img{transform:scale(1.04)}
   .card__cover::after{
     content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.78));
+    background:linear-gradient(180deg, transparent 45%, rgba(0,0,0,.8));
     z-index:1;
   }
   .card__fallback{
     position:absolute;inset:0;
     display:flex;align-items:center;justify-content:center;
-    font-size:48px;opacity:.5;z-index:0;
+    font-size:44px;opacity:.5;z-index:0;
   }
   .card__title{
     position:relative;z-index:2;color:#fff;
-    font-weight:700;font-size:15px;letter-spacing:-.01em;
+    font-weight:700;font-size:14px;letter-spacing:-.01em;
     line-height:1.3;
   }
   .card__body{
@@ -252,6 +251,7 @@
     position:relative;overflow:hidden;
     display:flex;align-items:center;justify-content:center;
     font-size:36px;
+    aspect-ratio:1/1;
   }
   .focus-card__img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .focus-card__body{padding:16px 18px;display:flex;flex-direction:column;justify-content:center;min-width:0}
@@ -331,9 +331,11 @@
   .loader__text{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 
   /* ---------- Responsive ---------- */
+  @media (max-width:1100px){
+    .grid{grid-template-columns:repeat(4,1fr)}
+  }
   @media (max-width:960px){
     .grid,.grid--focus{grid-template-columns:repeat(3,1fr)}
-    .grid--3{grid-template-columns:repeat(2,1fr)}
     .dev-block{grid-template-columns:1fr}
     .dev-block__actions{align-items:flex-start}
     .dev-block__note{text-align:left}
@@ -349,14 +351,14 @@
     .hero__search{max-width:100%}
   }
   @media (max-width:640px){
-    .grid,.grid--focus,.grid--3{grid-template-columns:repeat(2,1fr)}
+    .grid,.grid--focus{grid-template-columns:repeat(2,1fr)}
     .sec__head h2{font-size:18px}
     .hero h1{font-size:clamp(32px,9vw,52px)}
     .hero__search__count{display:none}
   }
   @media (max-width:420px){
     .container{padding:0 16px}
-    .grid,.grid--focus,.grid--3{grid-template-columns:1fr}
+    .grid,.grid--focus{grid-template-columns:1fr}
     .logo{font-size:18px}
     .logo__mark{width:38px;height:38px}
   }
@@ -364,13 +366,11 @@
 </head>
 <body>
 
-<!-- ====== LOADER ====== -->
 <div class="loader" id="loader">
   <div class="loader__bar"></div>
   <div class="loader__text">Загрузка каталога…</div>
 </div>
 
-<!-- ====== NAV ====== -->
 <header class="nav">
   <div class="container nav__inner">
     <a href="#" class="logo">
@@ -395,10 +395,8 @@
   </div>
 </header>
 
-<!-- ====== HERO ====== -->
 <section class="hero">
   <div class="container">
-
     <div class="hero__search" id="heroSearch">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
@@ -416,10 +414,8 @@
   </div>
 </section>
 
-<!-- ====== MAIN CONTENT ====== -->
 <main id="mainMode">
 
-  <!-- FOCUS -->
   <section class="sec" id="focusSection" style="display:none">
     <div class="container">
       <div class="sec__head">
@@ -430,7 +426,6 @@
     </div>
   </section>
 
-  <!-- RECOMMENDATIONS -->
   <section class="sec" id="recSection">
     <div class="container">
       <div class="sec__head">
@@ -441,7 +436,6 @@
     </div>
   </section>
 
-  <!-- ALL GAMES -->
   <section class="sec" id="allSection">
     <div class="container">
       <div class="sec__head">
@@ -452,7 +446,6 @@
     </div>
   </section>
 
-  <!-- DEV BLOCK -->
   <section class="container">
     <div class="dev-block">
       <div>
@@ -475,7 +468,6 @@
 
 </main>
 
-<!-- ====== SEARCH MODE ====== -->
 <div id="searchMode" style="display:none">
   <section class="search-results">
     <div class="container">
@@ -489,7 +481,6 @@
   </section>
 </div>
 
-<!-- ====== FOOTER ====== -->
 <footer class="foot">
   <div class="container">
     © 2026 <strong>HLEB GAME</strong> — каталог ИИ-игр.
@@ -524,7 +515,6 @@ const gameCountBadge = document.getElementById('gameCountBadge');
 
 let gamesLibrary = [];
 
-/* ---------- NAV ---------- */
 document.querySelectorAll('[data-nav]').forEach(el=>{
   el.addEventListener('click', e=>{
     const target = el.dataset.nav;
@@ -539,7 +529,6 @@ document.querySelectorAll('[data-nav]').forEach(el=>{
   });
 });
 
-/* ---------- Парсер .gamex ---------- */
 function parseGamex(text){
   const g = { title:'', url:'', image:'', fallbackIcon:'🎮', focus:false, authors:[] };
   const aMap = {};
@@ -604,12 +593,10 @@ async function loadAllGames(){
   return results.filter(Boolean);
 }
 
-/* ---------- Хелперы ---------- */
 function openGame(g){
   if(g.url && g.url !== '#') window.open(g.url,'_blank','noopener,noreferrer');
 }
 
-/* ---------- CARD (3:4) ---------- */
 function buildCard(g, i){
   const card = document.createElement('article');
   card.className = 'card';
@@ -667,7 +654,6 @@ function buildCard(g, i){
   return card;
 }
 
-/* ---------- FOCUS CARD (wide) ---------- */
 function buildFocusCard(g, i){
   const c = document.createElement('article');
   c.className = 'focus-card';
@@ -705,9 +691,7 @@ function buildFocusCard(g, i){
   return c;
 }
 
-/* ---------- RENDER ---------- */
 function renderAll(){
-  /* Focus */
   const focusGames = gamesLibrary.filter(g=>g.focus);
   if(focusGames.length){
     focusSection.style.display = 'block';
@@ -718,23 +702,20 @@ function renderAll(){
     focusSection.style.display = 'none';
   }
 
-  /* Recs */
   const pool = [...gamesLibrary];
   for(let i=pool.length-1;i>0;i--){
     const j = Math.floor(Math.random()*(i+1));
     [pool[i],pool[j]] = [pool[j],pool[i]];
   }
   recGrid.innerHTML = '';
-  pool.slice(0, Math.min(4, pool.length)).forEach((g,i)=> recGrid.appendChild(buildCard(g,i)));
+  pool.slice(0, Math.min(5, pool.length)).forEach((g,i)=> recGrid.appendChild(buildCard(g,i)));
 
-  /* All */
   allGamesGrid.innerHTML = '';
   gamesLibrary.forEach((g,i)=> allGamesGrid.appendChild(buildCard(g,i)));
   gameCountBadge.textContent = gamesLibrary.length;
   searchCountChip.textContent = `${gamesLibrary.length} игр`;
 }
 
-/* ---------- SEARCH ---------- */
 function runSearch(q){
   const s = q.trim().toLowerCase();
   if(!s){
@@ -767,7 +748,6 @@ function runSearch(q){
   }
 }
 
-/* ---------- INIT ---------- */
 async function init(){
   gamesLibrary = await loadAllGames();
   renderAll();
