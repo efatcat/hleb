@@ -3,230 +3,371 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HLEB GAME — автор</title>
+<title>HLEB GAME — профиль автора</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0a0c10; --card:rgba(18,22,32,.7); --gold:#e4b363;
-  --gold-soft:#f5dc9a; --text:#f0f3f8; --dim:#94a3b8; --mute:#5f6e85;
-  --border:rgba(228,179,99,.3);
-  --skeleton:rgba(255,255,255,.06);
-  --skeleton-shine:rgba(255,255,255,.12);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:'Unbounded',system-ui,sans-serif;line-height:1.4;
-  overflow-x:hidden;
-}
-.bg{position:fixed;inset:0;z-index:-2;
-  background:radial-gradient(circle at 20% 30%,#0f1219,#030507)}
-.grid{position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(60,80,120,.08) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(60,80,120,.08) 1px,transparent 1px);
-  background-size:48px 48px}
-.glow{position:fixed;width:70vw;height:70vw;border-radius:50%;
-  background:radial-gradient(circle,rgba(228,179,99,.08),transparent 70%);
-  top:-20%;right:-20%;z-index:0;pointer-events:none}
+  :root{
+    --bg:#0a0a0a;
+    --surface:#141414;
+    --surface-2:#1a1a1a;
+    --text:#fafafa;
+    --muted:#8b8b8b;
+    --muted-2:#666;
+    --line:#262626;
+    --line-2:#3a3a3a;
+    --accent:#fafafa;
+    --accent-soft:#1f1f1f;
+    --radius:16px;
+    --radius-sm:10px;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Unbounded',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .container{max-width:1140px;margin:0 auto;padding:0 24px}
 
-.container{max-width:1200px;margin:0 auto;padding:3rem 1.5rem 4rem;position:relative;z-index:2}
+  /* ---------- Nav ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,10,10,.82);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav__inner{
+    display:flex;align-items:center;justify-content:space-between;
+    height:80px;gap:24px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:22px;letter-spacing:-.02em;
+    flex-shrink:0;
+  }
+  .logo__mark{
+    width:46px;height:46px;border-radius:11px;
+    background:var(--text);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    color:#0a0a0a;font-weight:800;font-size:20px;
+  }
+  .logo__mark img{width:100%;height:100%;object-fit:contain;padding:3px;background:#0a0a0a}
+  .nav__right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+  .nav__back{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;color:var(--muted);font-weight:500;
+    transition:color .2s;cursor:pointer;
+  }
+  .nav__back:hover{color:var(--text)}
+  .nav__back svg{transition:transform .2s}
+  .nav__back:hover svg{transform:translateX(-3px)}
 
-.back{display:inline-flex;align-items:center;gap:.5rem;
-  background:rgba(18,22,32,.6);border-radius:60px;
-  padding:.5rem 1.2rem;margin-bottom:1.5rem;
-  text-decoration:none;color:#cfdef5;font-size:.8rem;
-  border:1px solid var(--border);cursor:pointer;transition:.2s}
-.back:hover{background:rgba(228,179,99,.2);color:var(--gold);border-color:var(--gold)}
+  /* ---------- Hero ---------- */
+  .hero{padding:80px 0 48px;position:relative;overflow:hidden;text-align:center}
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(60% 50% at 50% 0%, rgba(255,255,255,.06), transparent 70%);
+    pointer-events:none;
+  }
+  .hero > .container{position:relative}
+  .hero__avatar{
+    width:140px;height:140px;border-radius:50%;
+    margin:0 auto 24px;
+    background:var(--surface);
+    border:1px solid var(--line-2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:52px;color:var(--muted);
+    overflow:hidden;position:relative;
+  }
+  .hero__avatar img{width:100%;height:100%;object-fit:cover}
+  .hero__name{
+    font-size:clamp(36px,6vw,64px);
+    font-weight:800;letter-spacing:-.035em;
+    line-height:1.05;
+    margin-bottom:14px;
+  }
+  .hero__badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--surface);border:1px solid var(--line);
+    padding:6px 14px;border-radius:999px;
+    font-size:12px;color:var(--muted);font-weight:500;
+    margin-bottom:20px;
+  }
+  .hero__badge__dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#22c55e;
+    box-shadow:0 0 0 3px rgba(34,197,94,.2);
+  }
+  .hero__bio{
+    font-size:15px;color:var(--muted);
+    max-width:560px;margin:0 auto;
+    line-height:1.65;
+  }
 
-.hero{position:relative;display:flex;flex-direction:column;
-  align-items:center;text-align:center;margin-bottom:2.5rem;
-  padding:2.5rem 1.5rem 2rem;border-radius:2rem;
-  overflow:hidden;border:1px solid var(--border);
-  box-shadow:0 12px 28px -8px rgba(0,0,0,.5);
-  text-decoration:none;color:inherit;cursor:pointer;
-  transition:.35s}
-.hero:hover{transform:translateY(-4px);border-color:rgba(228,179,99,.7)}
-.hero-bg{position:absolute;inset:0;z-index:0;
-  background:linear-gradient(to bottom,rgba(10,12,16,.35),rgba(10,12,16,.85)) center/cover no-repeat;
-  background-color:#0f1219;transition:transform .5s}
-.hero:hover .hero-bg{transform:scale(1.03)}
-.hero>*:not(.hero-bg){position:relative;z-index:1}
+  /* ---------- Section ---------- */
+  .sec{padding:24px 0 96px}
+  .sec__head{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    margin-bottom:28px;flex-wrap:wrap;gap:12px;
+  }
+  .sec__head h2{
+    font-size:22px;font-weight:700;letter-spacing:-.02em;
+    display:flex;align-items:center;gap:12px;
+  }
+  .sec__count{
+    font-size:12px;color:var(--muted);
+    background:var(--surface);border:1px solid var(--line);
+    padding:3px 9px;border-radius:999px;font-weight:600;
+  }
+  .sec__head .link{
+    font-size:14px;color:var(--muted);font-weight:500;
+  }
 
-.avatar{width:140px;height:140px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:1.5rem;border:2px solid rgba(228,179,99,.6);
-  box-shadow:0 0 30px rgba(228,179,99,.3);
-  overflow:hidden;background:linear-gradient(135deg,#2a2e3f,#141824)}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.avatar .fallback{font-size:3rem}
+  /* ---------- Grid ---------- */
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
 
-h1{font-size:clamp(2rem,7vw,4rem);font-weight:800;
-  background:linear-gradient(135deg,#FFF6E0,#E4B363);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  margin-bottom:.75rem}
-.badge{font-size:.8rem;background:rgba(228,179,99,.15);
-  padding:.3rem 1.2rem;border-radius:40px;
-  border:1px solid rgba(228,179,99,.4);color:var(--gold);font-weight:500}
-.bio{margin-top:.8rem;font-size:.8rem;color:#cddef5;max-width:560px}
+  /* ---------- Card ---------- */
+  .card{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    cursor:pointer;
+    display:flex;flex-direction:column;
+    position:relative;
+    animation:fadeUp .5s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--line-2)}
+  .card__cover{
+    aspect-ratio:1/1;position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:14px;
+    background:linear-gradient(135deg,#1e1e1e,#0f0f0f);
+  }
+  .card__cover img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;
+    transition:transform .5s ease;
+  }
+  .card:hover .card__cover img{transform:scale(1.04)}
+  .card__cover::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, transparent 45%, rgba(0,0,0,.8));
+    z-index:1;
+  }
+  .card__fallback{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:44px;opacity:.5;z-index:0;
+  }
+  .card__title{
+    position:relative;z-index:2;color:#fff;
+    font-weight:700;font-size:14px;letter-spacing:-.01em;
+    line-height:1.3;
+  }
+  .card__body{
+    padding:12px 14px 14px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:10px;
+  }
+  .card__tag{
+    font-size:11px;color:var(--muted);font-weight:500;
+  }
+  .card__play{
+    font-size:12px;font-weight:700;color:var(--text);
+    flex-shrink:0;
+    display:flex;align-items:center;gap:4px;
+  }
 
-.section-title{font-size:1.5rem;font-weight:600;
-  margin:2rem 0 1.5rem;color:var(--gold);
-  border-left:3px solid var(--gold);padding-left:1rem}
+  /* ---------- Skeleton ---------- */
+  @keyframes shimmer{
+    0%{background-position:-468px 0}
+    100%{background-position:468px 0}
+  }
+  .sk{
+    background:#141414;
+    background-image:linear-gradient(
+      90deg,
+      #141414 0px,
+      #1e1e1e 40px,
+      #262626 80px,
+      #1e1e1e 120px,
+      #141414 160px
+    );
+    background-size:468px 100%;
+    background-repeat:no-repeat;
+    animation:shimmer 1.4s linear infinite;
+    border-radius:10px;
+  }
+  .sk-circle{border-radius:50%}
+  .sk-avatar{width:140px;height:140px;margin:0 auto 24px}
+  .sk-name{width:260px;height:44px;margin:0 auto 14px;border-radius:12px}
+  .sk-badge{width:200px;height:26px;margin:0 auto 20px;border-radius:999px}
+  .sk-bio{width:340px;height:14px;margin:0 auto;border-radius:8px}
+  .sk-head{width:120px;height:26px;margin-bottom:28px;border-radius:8px}
+  .sk-card{background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden}
+  .sk-cover{width:100%;aspect-ratio:1/1;border-radius:0}
+  .sk-body{padding:12px 14px 14px}
+  .sk-line{width:70%;height:12px;margin-bottom:8px;border-radius:6px}
+  .sk-line.short{width:40%;height:10px;margin-bottom:0}
+  .skeleton-wrap{display:none}
+  .skeleton-wrap.visible{display:block}
+  .real-wrap{display:none}
+  .real-wrap.visible{display:block}
 
-.games-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem}
-.game-card{background:var(--card);backdrop-filter:blur(12px);
-  border-radius:2rem;border:1px solid rgba(228,179,99,.25);
-  padding:1.5rem 1.5rem 1.8rem;width:260px;text-align:center;
-  cursor:pointer;transition:.35s;
-  box-shadow:0 12px 28px -8px rgba(0,0,0,.5)}
-.game-card:hover{transform:translateY(-8px) scale(1.02);
-  border-color:rgba(228,179,99,.7);background:rgba(25,30,42,.85)}
-.game-image{width:100%;aspect-ratio:1/1;border-radius:1.2rem;
-  overflow:hidden;margin-bottom:1rem;background:#0f121b;
-  display:flex;align-items:center;justify-content:center}
-.game-image img{width:100%;height:100%;object-fit:cover;display:block}
-.game-image .fallback{font-size:2.8rem}
-.game-title{font-size:1.3rem;font-weight:700;
-  background:linear-gradient(120deg,#f3e5c0,#e4b363);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  margin-bottom:.8rem}
-.game-link{display:inline-block;background:rgba(228,179,99,.12);
-  border:1px solid rgba(228,179,99,.5);
-  padding:.5rem 1.2rem;border-radius:60px;
-  text-decoration:none;color:#f5e2b0;font-weight:500;
-  font-size:.75rem;transition:.25s}
-.game-link:hover{background:var(--gold);color:#0a0c10;border-color:var(--gold)}
+  /* ---------- Empty ---------- */
+  .empty{
+    text-align:center;padding:60px 0;
+    color:var(--muted);font-size:14px;
+    grid-column:1/-1;
+  }
 
-.empty{text-align:center;color:var(--mute);padding:2rem;font-size:.9rem}
-footer{text-align:center;margin-top:3rem;font-size:.7rem;color:var(--mute);
-  border-top:1px solid rgba(228,179,99,.2);padding-top:2rem}
+  /* ---------- Footer ---------- */
+  .foot{
+    border-top:1px solid var(--line);
+    padding:28px 0;text-align:center;
+    color:var(--muted);font-size:12px;
+  }
+  .foot strong{color:var(--text);font-weight:600}
 
-/* ================== SKELETON ================== */
-@keyframes shimmer{
-  0%{background-position:-468px 0}
-  100%{background-position:468px 0}
-}
-.sk{
-  background:#0e121b;
-  background-image:linear-gradient(
-    90deg,
-    #0e121b 0px,
-    #1a2130 40px,
-    #1f2738 80px,
-    #1a2130 120px,
-    #0e121b 160px
-  );
-  background-size:468px 100%;
-  background-repeat:no-repeat;
-  animation:shimmer 1.4s linear infinite;
-  border-radius:10px;
-}
-.sk-circle{border-radius:50%}
-
-/* Hero skeleton */
-.sk-hero{
-  position:relative;display:flex;flex-direction:column;
-  align-items:center;text-align:center;margin-bottom:2.5rem;
-  padding:2.5rem 1.5rem 2rem;border-radius:2rem;
-  border:1px solid var(--border);
-  background:rgba(18,22,32,.55);
-  box-shadow:0 12px 28px -8px rgba(0,0,0,.5);
-}
-.sk-avatar{width:140px;height:140px;margin-bottom:1.5rem;
-  border:2px solid rgba(228,179,99,.15)}
-.sk-name{width:220px;height:38px;margin-bottom:.75rem;border-radius:12px}
-.sk-badge{width:170px;height:24px;border-radius:40px}
-.sk-bio{width:280px;height:14px;margin-top:1rem;border-radius:8px}
-
-/* Section title skeleton */
-.sk-title{width:120px;height:26px;margin:2rem 0 1.5rem;border-radius:8px}
-
-/* Game card skeleton */
-.sk-card{background:rgba(18,22,32,.55);backdrop-filter:blur(12px);
-  border-radius:2rem;border:1px solid rgba(228,179,99,.15);
-  padding:1.5rem 1.5rem 1.8rem;width:260px;text-align:center;
-  box-shadow:0 12px 28px -8px rgba(0,0,0,.5)}
-.sk-image{width:100%;aspect-ratio:1/1;border-radius:1.2rem;margin-bottom:1rem}
-.sk-gtitle{width:80%;height:20px;margin:0 auto .8rem;border-radius:8px}
-.sk-glink{width:110px;height:32px;margin:0 auto;border-radius:60px}
-
-.skeleton-wrap{display:none}
-.skeleton-wrap.visible{display:block}
-.real-wrap{display:none}
-.real-wrap.visible{display:block}
-
-/* ================== /SKELETON ================== */
-
-@media(max-width:650px){
-  .container{padding:2rem 1.2rem}
-  .game-card,.sk-card{width:100%;max-width:280px}
-  .avatar,.sk-avatar{width:110px;height:110px}
-  .hero,.sk-hero{padding:2rem 1rem 1.5rem}
-}
+  /* ---------- Responsive ---------- */
+  @media (max-width:1100px){.grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:960px){
+    .grid{grid-template-columns:repeat(3,1fr)}
+    .hero{padding:56px 0 40px}
+    .hero__avatar{width:120px;height:120px;font-size:44px}
+  }
+  @media (max-width:860px){
+    .nav__inner{height:72px}
+    .logo{font-size:20px}
+    .logo__mark{width:42px;height:42px}
+  }
+  @media (max-width:640px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .sec__head h2{font-size:18px}
+    .hero__name{font-size:clamp(28px,8vw,44px)}
+    .hero__bio{font-size:14px}
+  }
+  @media (max-width:420px){
+    .container{padding:0 16px}
+    .grid{grid-template-columns:1fr}
+    .logo{font-size:18px}
+    .logo__mark{width:38px;height:38px}
+    .hero__avatar{width:100px;height:100px;font-size:36px}
+  }
 </style>
 </head>
 <body>
-<div class="bg"></div>
-<div class="grid"></div>
-<div class="glow"></div>
 
-<div class="container">
-  <a href="/hleb/index.html" class="back">← На главную HLEB GAME</a>
+<!-- ====== NAV ====== -->
+<header class="nav">
+  <div class="container nav__inner">
+    <a href="/hleb/index.html" class="logo">
+      <span class="logo__mark"><img src="/hleb/LOGOhg.png" alt="" onerror="this.parentElement.textContent='H'"></span>
+      HLEB GAME
+    </a>
+    <div class="nav__right">
+      <a href="/hleb/index.html" class="nav__back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        На главную
+      </a>
+    </div>
+  </div>
+</header>
 
-  <!-- ========== SKELETON (заглушка во время загрузки) ========== -->
-  <div class="skeleton-wrap visible" id="skeleton">
-    <div class="sk-hero">
+<!-- ====== HERO (skeleton) ====== -->
+<div class="skeleton-wrap visible" id="skeleton">
+  <section class="hero">
+    <div class="container">
       <div class="sk sk-circle sk-avatar"></div>
       <div class="sk sk-name"></div>
       <div class="sk sk-badge"></div>
       <div class="sk sk-bio"></div>
     </div>
-
-    <div class="sk sk-title"></div>
-    <div class="games-grid" id="skGames">
-      <div class="sk-card">
-        <div class="sk sk-image"></div>
-        <div class="sk sk-gtitle"></div>
-        <div class="sk sk-glink"></div>
-      </div>
-      <div class="sk-card">
-        <div class="sk sk-image"></div>
-        <div class="sk sk-gtitle"></div>
-        <div class="sk sk-glink"></div>
-      </div>
-      <div class="sk-card">
-        <div class="sk sk-image"></div>
-        <div class="sk sk-gtitle"></div>
-        <div class="sk sk-glink"></div>
+  </section>
+  <section class="sec">
+    <div class="container">
+      <div class="sk sk-head"></div>
+      <div class="grid" id="skGrid">
+        <div class="sk-card">
+          <div class="sk sk-cover"></div>
+          <div class="sk-body"><div class="sk sk-line"></div><div class="sk sk-line short"></div></div>
+        </div>
+        <div class="sk-card">
+          <div class="sk sk-cover"></div>
+          <div class="sk-body"><div class="sk sk-line"></div><div class="sk sk-line short"></div></div>
+        </div>
+        <div class="sk-card">
+          <div class="sk sk-cover"></div>
+          <div class="sk-body"><div class="sk sk-line"></div><div class="sk sk-line short"></div></div>
+        </div>
+        <div class="sk-card">
+          <div class="sk sk-cover"></div>
+          <div class="sk-body"><div class="sk sk-line"></div><div class="sk sk-line short"></div></div>
+        </div>
+        <div class="sk-card">
+          <div class="sk sk-cover"></div>
+          <div class="sk-body"><div class="sk sk-line"></div><div class="sk sk-line short"></div></div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <!-- ========== РЕАЛЬНЫЙ КОНТЕНТ ========== -->
-  <div class="real-wrap" id="real">
-    <a class="hero" id="hero" target="_blank" rel="noopener noreferrer">
-      <div class="hero-bg" id="heroBg"></div>
-      <div class="avatar" id="avatar"><div class="fallback">👤</div></div>
-      <h1 id="authorName">Автор</h1>
-      <div class="badge" id="authorBadge">✦ создатель ИИ-игр ✦</div>
-      <div class="bio" id="authorBio"></div>
-    </a>
-
-    <div class="section-title">✦ Игры</div>
-    <div class="games-grid" id="gamesGrid"></div>
-    <div class="empty" id="emptyState" style="display:none">У автора пока нет игр</div>
-  </div>
-
-  <footer>
-    HLEB GAME © 2026 — система ИИ-игр<br>
-    <span style="font-size:.65rem">нейросетевая платформа · каталог авторов</span>
-  </footer>
+  </section>
 </div>
+
+<!-- ====== REAL ====== -->
+<div class="real-wrap" id="real">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__avatar" id="authorAvatar">👤</div>
+      <h1 class="hero__name" id="authorName">Автор</h1>
+      <div class="hero__badge">
+        <span class="hero__badge__dot"></span>
+        <span id="authorBadge">создатель ИИ-игр</span>
+      </div>
+      <p class="hero__bio" id="authorBio"></p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="container">
+      <div class="sec__head">
+        <h2>Игры <span class="sec__count" id="gamesCount">0</span></h2>
+        <span class="link">от автора</span>
+      </div>
+      <div class="grid" id="gamesGrid"></div>
+      <div class="empty" id="emptyState" style="display:none">У автора пока нет игр</div>
+    </div>
+  </section>
+</div>
+
+<!-- ====== FOOTER ====== -->
+<footer class="foot">
+  <div class="container">
+    © 2026 <strong>HLEB GAME</strong> — каталог ИИ-игр.
+  </div>
+</footer>
 
 <script>
 (function(){
 'use strict';
+
+const ROOT = '/hleb';
+const AUTHORS_DIR = ROOT + '/avtor/authors';
+const GAMEX_DIR   = ROOT + '/avtor/gamexes';
+
+const skeleton = document.getElementById('skeleton');
+const realWrap = document.getElementById('real');
 
 function getSlug(){
   const parts = location.pathname.split('/').filter(Boolean);
@@ -235,22 +376,6 @@ function getSlug(){
     return new URLSearchParams(location.search).get('author') || '';
   }
   return last.replace(/\.html$/i,'');
-}
-
-const ROOT        = '/hleb';
-const AUTHORS_DIR = ROOT + '/avtor/authors';
-const GAMEX_DIR   = ROOT + '/avtor/gamexes';
-
-const skeleton = document.getElementById('skeleton');
-const realWrap = document.getElementById('real');
-
-function showSkeleton(){
-  skeleton.classList.add('visible');
-  realWrap.classList.remove('visible');
-}
-function showReal(){
-  skeleton.classList.remove('visible');
-  realWrap.classList.add('visible');
 }
 
 function parseAuthorx(text){
@@ -330,83 +455,89 @@ function renderAuthor(a, slug){
   const nameEl  = document.getElementById('authorName');
   const badgeEl = document.getElementById('authorBadge');
   const bioEl   = document.getElementById('authorBio');
-  const avEl    = document.getElementById('avatar');
-  const hero    = document.getElementById('hero');
-  const bgEl    = document.getElementById('heroBg');
+  const avEl    = document.getElementById('authorAvatar');
 
   nameEl.textContent = a.name || slug;
-  badgeEl.textContent = a.badge || '✦ создатель ИИ-игр ✦';
+  badgeEl.textContent = a.badge || 'создатель ИИ-игр';
 
   if(a.bio){
     bioEl.textContent = a.bio;
-  } else if(bioEl){
+  }else{
     bioEl.remove();
   }
 
   if(a.avatar){
     avEl.innerHTML = `<img src="${a.avatar}" alt="${a.name||slug}">`;
-  } else {
-    avEl.innerHTML = `<div class="fallback">👤</div>`;
+  }else{
+    avEl.textContent = '👤';
   }
 
-  if(a.banner){
-    bgEl.style.background =
-      `linear-gradient(to bottom,rgba(10,12,16,.35),rgba(10,12,16,.85)),`+
-      `url('${a.banner}') center top / cover no-repeat`;
-  }
-  if(a.bannerlink){
-    hero.href = a.bannerlink;
-  } else {
-    hero.removeAttribute('href');
-    hero.style.cursor = 'default';
+  document.title = `${a.name || slug} — HLEB GAME`;
+}
+
+function buildCard(g, i){
+  const card = document.createElement('article');
+  card.className = 'card';
+  card.style.animationDelay = `${Math.min(i*0.05,0.5)}s`;
+
+  const cover = document.createElement('div');
+  cover.className = 'card__cover';
+
+  if(g.image){
+    const img = document.createElement('img');
+    img.src = g.image; img.alt = g.title; img.loading = 'lazy';
+    img.onerror = ()=>{ img.remove(); cover.insertAdjacentHTML('afterbegin',`<div class="card__fallback">${g.fallbackIcon}</div>`); };
+    cover.appendChild(img);
+  }else{
+    cover.insertAdjacentHTML('afterbegin',`<div class="card__fallback">${g.fallbackIcon}</div>`);
   }
 
-  document.title = `${a.name || slug} — страница автора`;
+  const title = document.createElement('h3');
+  title.className = 'card__title';
+  title.textContent = g.title;
+  cover.appendChild(title);
+
+  const body = document.createElement('div');
+  body.className = 'card__body';
+
+  const tag = document.createElement('span');
+  tag.className = 'card__tag';
+  tag.textContent = g.authors.map(a=>a.slug || a.name).join(' · ');
+
+  const play = document.createElement('span');
+  play.className = 'card__play';
+  play.textContent = 'Играть →';
+
+  body.append(tag, play);
+  card.append(cover, body);
+  card.onclick = ()=>{
+    if(g.url && g.url !== '#') window.open(g.url,'_blank','noopener,noreferrer');
+  };
+  return card;
 }
 
 function renderGames(games){
-  const grid  = document.getElementById('gamesGrid');
+  const grid = document.getElementById('gamesGrid');
   const empty = document.getElementById('emptyState');
+  const count = document.getElementById('gamesCount');
   grid.innerHTML = '';
+  count.textContent = games.length;
 
   if(!games.length){
     empty.style.display = 'block';
     return;
   }
   empty.style.display = 'none';
+  games.forEach((g,i)=> grid.appendChild(buildCard(g,i)));
+}
 
-  games.forEach((g, idx)=>{
-    const card = document.createElement('div');
-    card.className = 'game-card';
-    card.style.animationDelay = `${idx*0.07}s`;
-
-    const imgDiv = document.createElement('div');
-    imgDiv.className = 'game-image';
-    if(g.image){
-      const img = document.createElement('img');
-      img.src = g.image; img.alt = g.title; img.loading = 'lazy';
-      img.onerror = ()=>{ imgDiv.innerHTML = `<div class="fallback">${g.fallbackIcon}</div>`; };
-      imgDiv.appendChild(img);
-    } else {
-      imgDiv.innerHTML = `<div class="fallback">${g.fallbackIcon}</div>`;
-    }
-
-    const title = document.createElement('div');
-    title.className = 'game-title';
-    title.textContent = g.title;
-
-    const link = document.createElement('a');
-    link.className = 'game-link';
-    link.href = g.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
-    link.textContent = 'Играть →';
-
-    card.append(imgDiv, title, link);
-    card.onclick = e=>{
-      if(e.target === link || link.contains(e.target)) return;
-      window.open(g.url,'_blank','noopener,noreferrer');
-    };
-    grid.appendChild(card);
-  });
+function showReal(){
+  skeleton.classList.remove('visible');
+  realWrap.classList.add('visible');
+}
+function showSkeleton(){
+  skeleton.classList.add('visible');
+  realWrap.classList.remove('visible');
 }
 
 (async function init(){
@@ -416,17 +547,15 @@ function renderGames(games){
     showReal();
     document.getElementById('authorName').textContent = 'Автор не найден';
     document.getElementById('authorBadge').textContent = 'нет имени в URL';
+    document.getElementById('authorBio').textContent = 'В URL нет имени автора. Пример: /avtor/cactusini';
     document.getElementById('gamesGrid').innerHTML =
-      '<div class="empty">В URL нет имени автора. Пример: /avtor/cactusini</div>';
+      '<div class="empty">У автора пока нет игр</div>';
     return;
   }
 
-  // Показываем skeleton сразу
   showSkeleton();
 
-  // Минимум 400мс заглушки, чтобы не мигало при быстрой загрузке
   const minDelay = new Promise(res => setTimeout(res, 400));
-
   const [author, games] = await Promise.all([
     loadAuthor(slug),
     loadAuthorGames(slug),
@@ -437,8 +566,10 @@ function renderGames(games){
     showReal();
     document.getElementById('authorName').textContent = slug;
     document.getElementById('authorBadge').textContent = 'профиль не найден';
+    document.getElementById('authorBio').textContent = `Файл avtor/authors/${slug}.authorx не найден`;
     document.getElementById('gamesGrid').innerHTML =
-      `<div class="empty">Файл <code>avtor/authors/${slug}.authorx</code> не найден</div>`;
+      '<div class="empty">У автора пока нет игр</div>';
+    document.getElementById('gamesCount').textContent = '0';
     return;
   }
 
