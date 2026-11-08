@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>HLEB GAME — каталог ИИ-игр</title>
+
+<!-- Фавикон -->
+<link rel="icon" type="image/png" href="LOGOhg.png">
+<link rel="apple-touch-icon" href="LOGOhg.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -490,6 +495,27 @@
 <script>
 (function(){
 'use strict';
+
+/* ============================================================
+   Редирект только с hlebb.vercel.app → GitHub Pages
+   ============================================================ */
+const GITHUB_PAGES_URL = 'https://efatcat.github.io/hleb/';
+const BLOCKED_HOSTS = ['hlebb.vercel.app'];
+
+function maybeRedirectFromVercel(){
+  try{
+    const host = location.hostname.toLowerCase();
+    if(!BLOCKED_HOSTS.some(h => host === h || host.endsWith('.' + h))) return;
+    const url = new URL(GITHUB_PAGES_URL);
+    url.pathname = url.pathname.replace(/\/$/, '') + location.pathname;
+    url.pathname = url.pathname.replace(/\/{2,}/g, '/');
+    url.search = location.search;
+    url.hash = location.hash;
+    location.replace(url.toString());
+  }catch(e){ console.warn('Redirect failed:', e); }
+}
+maybeRedirectFromVercel();
+/* ============================================================ */
 
 const MANIFEST_URL = 'gamexes/index.json';
 const GAMEX_DIR    = 'gamexes';
