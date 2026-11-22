@@ -179,40 +179,6 @@
   .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
   .grid--focus{grid-template-columns:repeat(3,1fr);gap:18px}
 
-  /* ---------- Upcoming (Ожидаются) ---------- */
-  .upcoming-card{
-    background:var(--surface);border:1px solid var(--line);
-    border-radius:var(--radius);overflow:hidden;
-    box-shadow:var(--shadow);
-    animation:fadeUp .5s ease both;
-  }
-  .upcoming-card__video{
-    position:relative;aspect-ratio:16/9;background:#000;
-  }
-  .upcoming-card__video video{
-    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-  }
-  .upcoming-card__badge{
-    position:absolute;top:14px;left:14px;z-index:2;
-    background:rgba(10,10,10,.75);backdrop-filter:blur(8px);
-    border:1px solid var(--line-2);border-radius:999px;
-    padding:5px 12px;font-size:12px;font-weight:600;color:var(--text);
-  }
-  .upcoming-card__body{
-    display:flex;align-items:center;justify-content:space-between;
-    gap:16px;flex-wrap:wrap;padding:18px 20px;
-  }
-  .upcoming-card__title{font-size:20px;font-weight:700;letter-spacing:-.02em}
-  .upcoming-card__meta{font-size:13px;color:var(--muted);margin-top:2px}
-  .btn--notify{
-    background:var(--text);color:#0a0a0a;border:none;
-    border-radius:999px;padding:10px 18px;font-size:13px;font-weight:600;
-    cursor:pointer;transition:opacity .2s ease, transform .15s ease;
-    white-space:nowrap;
-  }
-  .btn--notify:hover{transform:translateY(-1px)}
-  .btn--notify[disabled]{opacity:.55;cursor:default;transform:none}
-
   /* ---------- Card ---------- */
   .card{
     background:var(--surface);border:1px solid var(--line);
@@ -421,7 +387,6 @@
         <li><a data-nav="home" class="active">Главная</a></li>
         <li><a data-nav="focus">Фокус</a></li>
         <li><a data-nav="rec">Рекомендации</a></li>
-        <li><a data-nav="upcoming">Ожидаются</a></li>
         <li><a data-nav="all">Каталог</a></li>
       </ul>
     </nav>
@@ -473,16 +438,6 @@
         <span class="link">случайная выборка</span>
       </div>
       <div class="grid" id="recGrid"></div>
-    </div>
-  </section>
-
-  <section class="sec" id="upcomingSection" style="display:none">
-    <div class="container">
-      <div class="sec__head">
-        <h2>Ожидаются <span class="sec__count" id="upcomingCountBadge">0</span></h2>
-        <span class="link">скоро в каталоге</span>
-      </div>
-      <div id="upcomingGrid"></div>
     </div>
   </section>
 
@@ -564,15 +519,6 @@ maybeRedirectFromVercel();
 
 const MANIFEST_URL = 'gamexes/index.json';
 const GAMEX_DIR    = 'gamexes';
-const UPCOMING_KEY = 'upcoming:v1';
-// Дата релиза игры (парсится из поля release в .gamex). После неё игра выходит из ожидаемых.
-function parseReleaseDate(str){
-  if(!str) return null;
-  const m = String(str).match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2}))?/);
-  if(!m) return null;
-  const d = new Date(+m[1], +m[2]-1, +m[3]||1, +(m[4]||0), +(m[5]||0));
-  return isNaN(d) ? null : d;
-}
 
 const loader        = document.getElementById('loader');
 const mainMode      = document.getElementById('mainMode');
@@ -593,10 +539,6 @@ const recGrid       = document.getElementById('recGrid');
 const allGamesGrid  = document.getElementById('allGamesGrid');
 const gameCountBadge = document.getElementById('gameCountBadge');
 
-const upcomingSection = document.getElementById('upcomingSection');
-const upcomingGrid    = document.getElementById('upcomingGrid');
-const upcomingCountBadge = document.getElementById('upcomingCountBadge');
-
 let gamesLibrary = [];
 
 document.querySelectorAll('[data-nav]').forEach(el=>{
@@ -607,14 +549,14 @@ document.querySelectorAll('[data-nav]').forEach(el=>{
     if(navItem) navItem.classList.add('active');
 
     if(target === 'home'){ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); return; }
-    const map = {focus:'focusSection', rec:'recSection', upcoming:'upcomingSection', all:'allSection'};
+    const map = {focus:'focusSection', rec:'recSection', all:'allSection'};
     const el2 = document.getElementById(map[target]);
     if(el2){ e.preventDefault(); el2.scrollIntoView({behavior:'smooth', block:'start'}); }
   });
 });
 
 function parseGamex(text){
-  const g = { title:'', url:'', image:'', fallbackIcon:'🎮', focus:false, authors:[], release:'', teaser:'' };
+  const g = { title:'', url:'', image:'', fallbackIcon:'🎮', focus:false, authors:[] };
   const aMap = {};
 
   text.split(/\r?\n/).forEach(raw=>{
@@ -631,8 +573,6 @@ function parseGamex(text){
     else if(key === 'image')  g.image = val;
     else if(key === 'icon' || key === 'fallbackicon') g.fallbackIcon = val;
     else if(key === 'focus')  g.focus = /^(true|1|yes|да)$/i.test(val);
-    else if(key === 'release') g.release = val;
-    else if(key === 'teaser')  g.teaser = val;
     else if(/^author\d*$/.test(key)){
       const n = (key.match(/\d+/)||[1])[0]|0 || 1;
       (aMap[n] ||= {}).name = val;
@@ -672,9 +612,7 @@ async function loadAllGames(){
     try{
       const r = await fetch(`${GAMEX_DIR}/${clean}.gamex`, {cache:'no-store'});
       if(!r.ok) return null;
-      const g = parseGamex(await r.text());
-      if(g && !g.slug) g.slug = clean;
-      return g;
+      return parseGamex(await r.text());
     }catch(e){ return null; }
   }));
 
@@ -683,140 +621,6 @@ async function loadAllGames(){
 
 function openGame(g){
   if(g.url && g.url !== '#') window.open(g.url,'_blank','noopener,noreferrer');
-}
-
-/* ---------- Upcoming (Ожидаются) ---------- */
-function isUpcoming(g){
-  const d = parseReleaseDate(g.release);
-  return !!(d && d.getTime() > Date.now());
-}
-
-function getWishlist(){
-  try{ return JSON.parse(localStorage.getItem(UPCOMING_KEY)) || []; }catch(e){ return []; }
-}
-function saveWishlist(list){
-  try{ localStorage.setItem(UPCOMING_KEY, JSON.stringify(list)); }catch(e){}
-}
-function inWishlist(slug){ return getWishlist().some(x=>x.slug===slug); }
-
-function addToWishlist(g){
-  const list = getWishlist();
-  if(!list.some(x=>x.slug===g.slug)){
-    list.push({slug:g.slug, title:g.title, release:g.release});
-    saveWishlist(list);
-  }
-}
-
-function formatRelease(str){
-  const d = parseReleaseDate(str);
-  if(!d) return str;
-  return d.toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})
-       + ' · ' + d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
-}
-
-function buildUpcomingCard(g, i){
-  const card = document.createElement('article');
-  card.className = 'upcoming-card';
-  card.style.animationDelay = `${Math.min(i*0.05,0.4)}s`;
-
-  const media = document.createElement('div');
-  media.className = 'upcoming-card__video';
-
-  const badge = document.createElement('span');
-  badge.className = 'upcoming-card__badge';
-  badge.textContent = 'ожидается';
-  media.appendChild(badge);
-
-  const videoSrc = g.teaser || (/\.mp4($|\?)/i.test(g.image||'') ? g.image : '');
-  if(videoSrc){
-    const v = document.createElement('video');
-    v.src = videoSrc;
-    v.muted = true;
-    v.defaultMuted = true;
-    v.loop = true;
-    v.playsInline = true;
-    v.autoplay = true;
-    v.setAttribute('muted');
-    v.setAttribute('playsinline');
-    v.onerror = ()=>{ v.remove(); media.insertAdjacentHTML('beforeend', `<div class="card__fallback">${g.fallbackIcon}</div>`); };
-    media.appendChild(v);
-    const p = v.play();
-    if(p && p.catch) p.catch(()=>{}); // autoplay без звука разрешён, но на всякий случай глушим ошибки
-  }else{
-    media.insertAdjacentHTML('beforeend', `<div class="card__fallback">${g.fallbackIcon}</div>`);
-  }
-
-  const body = document.createElement('div');
-  body.className = 'upcoming-card__body';
-
-  const info = document.createElement('div');
-  const title = document.createElement('div');
-  title.className = 'upcoming-card__title';
-  title.textContent = g.title;
-  const meta = document.createElement('div');
-  meta.className = 'upcoming-card__meta';
-  meta.textContent = `от ${g.authors.map(a=>a.name).join(', ')} · выход ${formatRelease(g.release)}`;
-  info.append(title, meta);
-
-  const btn = document.createElement('button');
-  btn.className = 'btn--notify';
-  const updateBtn = ()=>{
-    if(inWishlist(g.slug)){
-      btn.textContent = '✓ В ожидаемых';
-      btn.disabled = true;
-    }else{
-      btn.textContent = 'Добавить в ожидаемые';
-      btn.disabled = false;
-    }
-  };
-  btn.addEventListener('click', async e=>{
-    e.stopPropagation();
-    if(typeof Notification !== 'undefined' && Notification.permission === 'default'){
-      try{ await Notification.requestPermission(); }catch(err){}
-    }
-    addToWishlist(g);
-    updateBtn();
-  });
-  updateBtn();
-
-  body.append(info, btn);
-  card.append(media, body);
-  return card;
-}
-
-function renderUpcoming(upcomingList){
-  upcomingSection.style.display = upcomingList.length ? 'block' : 'none';
-  upcomingCountBadge.textContent = upcomingList.length;
-  upcomingGrid.innerHTML = '';
-  upcomingList.forEach((g,i)=> upcomingGrid.appendChild(buildUpcomingCard(g,i)));
-}
-
-// Проверка наступивших релизов: рассылка уведомлений подписчикам и обновление каталога
-function checkDueReleases(games){
-  const now = Date.now();
-  const list = getWishlist();
-  if(!list.length) return false;
-  let changed = false;
-  const remaining = [];
-  list.forEach(item=>{
-    const g = games.find(x=>x.slug===item.slug);
-    const rel = parseReleaseDate(g ? g.release : item.release);
-    if(rel && rel.getTime() <= now){
-      changed = true;
-      try{
-        if(typeof Notification !== 'undefined' && Notification.permission === 'granted'){
-          new Notification('HLEB GAME', {
-            body: `Вышла ${g ? g.title : item.title}`,
-            icon: 'LOGOhg.png'
-          });
-        }
-      }catch(e){}
-    }else{
-      remaining.push(item);
-    }
-  });
-  if(changed) saveWishlist(remaining);
-  return changed;
 }
 
 function buildCard(g, i){
@@ -914,9 +718,7 @@ function buildFocusCard(g, i){
 }
 
 function renderAll(){
-  checkDueReleases(gamesLibrary);
-
-  const focusGames = gamesLibrary.filter(g=>g.focus && !isUpcoming(g));
+  const focusGames = gamesLibrary.filter(g=>g.focus);
   if(focusGames.length){
     focusSection.style.display = 'block';
     focusCountBadge.textContent = focusGames.length;
@@ -926,7 +728,7 @@ function renderAll(){
     focusSection.style.display = 'none';
   }
 
-  const pool = gamesLibrary.filter(g=>!isUpcoming(g));
+  const pool = [...gamesLibrary];
   for(let i=pool.length-1;i>0;i--){
     const j = Math.floor(Math.random()*(i+1));
     [pool[i],pool[j]] = [pool[j],pool[i]];
@@ -934,14 +736,10 @@ function renderAll(){
   recGrid.innerHTML = '';
   pool.slice(0, Math.min(5, pool.length)).forEach((g,i)=> recGrid.appendChild(buildCard(g,i)));
 
-  const upcomingList = gamesLibrary.filter(isUpcoming);
-  renderUpcoming(upcomingList);
-
-  const released = pool;
   allGamesGrid.innerHTML = '';
-  released.forEach((g,i)=> allGamesGrid.appendChild(buildCard(g,i)));
-  gameCountBadge.textContent = released.length;
-  searchCountChip.textContent = `${released.length + upcomingList.length} игр`;
+  gamesLibrary.forEach((g,i)=> allGamesGrid.appendChild(buildCard(g,i)));
+  gameCountBadge.textContent = gamesLibrary.length;
+  searchCountChip.textContent = `${gamesLibrary.length} игр`;
 }
 
 function runSearch(q){
@@ -959,7 +757,6 @@ function runSearch(q){
   searchQueryLabel.textContent = `по запросу «${q.trim()}»`;
 
   const found = gamesLibrary.filter(g=>{
-    if(isUpcoming(g)) return false;
     const t = g.title.toLowerCase().includes(s);
     const a = g.authors.some(x=>x.name.toLowerCase().includes(s));
     return t || a;
@@ -981,22 +778,6 @@ async function init(){
   gamesLibrary = await loadAllGames();
   renderAll();
   loader.classList.add('hidden');
-
-  // раз в минуту проверяем, не вышел ли кто-то из ожидаемых (уведомления подписчикам)
-  setInterval(async ()=>{
-    if(checkDueReleases(gamesLibrary)){
-      try{
-        const fresh = await fetch(MANIFEST_URL,{cache:'no-store'});
-        if(fresh.ok){
-          const data = await fresh.json();
-          if(Array.isArray(data) && data.length !== gamesLibrary.length){
-            gamesLibrary = await loadAllGames();
-          }
-        }
-      }catch(e){}
-      renderAll();
-    }
-  }, 60000);
 
   searchInput.addEventListener('input', e=>runSearch(e.target.value));
   searchClear.addEventListener('click', ()=>{
