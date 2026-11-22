@@ -271,6 +271,8 @@
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
   .focus-card__author{font-size:11px;color:var(--muted)}
+  .focus-card__author a{color:var(--muted);transition:color .2s}
+  .focus-card__author a:hover{color:var(--text)}
 
   /* ---------- Ожидаемые ---------- */
   .wait-card{
@@ -283,7 +285,7 @@
   }
   .wait-card:hover{border-color:var(--line-2)}
   .wait-card__teaser{
-    position:relative;width:100%;aspect-ratio:16/9;
+    position:relative;width:100%;height:140px;
     background:#000;overflow:hidden;
     border-bottom:1px solid var(--line);
   }
@@ -307,6 +309,8 @@
     color:var(--text);line-height:1.2;
   }
   .wait-card__author{font-size:12px;color:var(--muted)}
+  .wait-card__author a{color:var(--muted);transition:color .2s}
+  .wait-card__author a:hover{color:var(--text)}
   .wait-card__date{font-size:12px;color:var(--muted)}
   .wait-card__date strong{color:var(--text);font-weight:600}
   .wait-card__actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
@@ -415,6 +419,7 @@
     .sec__head h2{font-size:18px}
     .hero h1{font-size:clamp(32px,9vw,52px)}
     .hero__search__count{display:none}
+    .wait-card__teaser{height:110px}
   }
   @media (max-width:420px){
     .container{padding:0 16px}
@@ -894,9 +899,22 @@ function buildFocusCard(g, i){
   title.className = 'focus-card__title';
   title.textContent = g.title;
 
+  /* --- Кликабельные авторы --- */
   const author = document.createElement('div');
   author.className = 'focus-card__author';
-  author.textContent = 'от ' + g.authors.map(a=>a.name).join(', ');
+  author.appendChild(document.createTextNode('от '));
+  g.authors.forEach((a, idx)=>{
+    if(idx > 0) author.appendChild(document.createTextNode(', '));
+    if(a.page && a.page !== '#'){
+      const aEl = document.createElement('a');
+      aEl.textContent = a.name;
+      aEl.href = a.page;
+      aEl.addEventListener('click', e => e.stopPropagation());
+      author.appendChild(aEl);
+    }else{
+      author.appendChild(document.createTextNode(a.name));
+    }
+  });
 
   body.append(tag, title, author);
   c.append(img, body);
@@ -910,7 +928,7 @@ function buildUpcomingCard(g, i){
   card.className = 'wait-card';
   card.style.animationDelay = `${Math.min(i*0.05,0.4)}s`;
 
-  /* --- Тизер 16:9 --- */
+  /* --- Компактный тизер --- */
   const teaser = document.createElement('div');
   teaser.className = 'wait-card__teaser';
   if(g.teaser){
@@ -923,7 +941,7 @@ function buildUpcomingCard(g, i){
     teaser.appendChild(ifr);
   }else{
     teaser.insertAdjacentHTML('afterbegin',
-      `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:.4">${g.fallbackIcon||'🎬'}</div>`);
+      `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:40px;opacity:.4">${g.fallbackIcon||'🎬'}</div>`);
   }
   const badge = document.createElement('span');
   badge.className = 'wait-card__badge';
@@ -938,9 +956,21 @@ function buildUpcomingCard(g, i){
   title.className = 'wait-card__title';
   title.textContent = g.title;
 
+  /* --- Кликабельные авторы --- */
   const author = document.createElement('div');
   author.className = 'wait-card__author';
-  author.textContent = 'от ' + g.authors.map(a=>a.name).join(', ');
+  author.appendChild(document.createTextNode('от '));
+  g.authors.forEach((a, idx)=>{
+    if(idx > 0) author.appendChild(document.createTextNode(', '));
+    if(a.page && a.page !== '#'){
+      const aEl = document.createElement('a');
+      aEl.textContent = a.name;
+      aEl.href = a.page;
+      author.appendChild(aEl);
+    }else{
+      author.appendChild(document.createTextNode(a.name));
+    }
+  });
 
   const date = document.createElement('div');
   date.className = 'wait-card__date';
@@ -1067,11 +1097,10 @@ async function init(){
   renderAll();
   loader.classList.add('hidden');
 
-  /* Проверка релизов при заходе + раз в минуту */
   checkReleasesOnLoad();
   setInterval(()=>{
     checkReleasesOnLoad();
-    renderAll(); // пересчёт «ожидаемых» при наступлении релиза
+    renderAll();
   }, 60 * 1000);
 
   searchInput.addEventListener('input', e=>runSearch(e.target.value));
